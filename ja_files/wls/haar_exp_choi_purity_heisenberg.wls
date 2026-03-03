@@ -76,6 +76,10 @@ halfDimH=dimH/2;
 halfDimHPlusOne=dimH/2+1;
 
 
+L=3;
+(1/2)^2*(1/12)^(L-1)*Power[3., (L-1) - Count[#, x_/; x!=0]]&[{0,0}]
+
+
 numkernels = Total[kernels];
 kernels = Prepend[StringJoin[#1, ToString[#2]]&@@@Transpose[{{"ssh://nodo1/?","ssh://nodo2/?","ssh://nodo3/?","ssh://nodo4/?"}, kernels[[2;;]]}], kernels[[1]]];
 LaunchKernels[kernels];

@@ -14,15 +14,15 @@
   \node (c\i) at ({(\i - 1) * 2.6}, 0) [anchor=north west, inner sep=0]
     {\includegraphics[width=0.19\linewidth, page=\i]{regular.pdf}};
 }
-\node[anchor=north west, xshift=-14pt, yshift=10pt, text=orange!90!red] at (c1.north west)
-    {\Huge $\bigstar$};
+\node[anchor=north west, xshift=-14pt, yshift=10pt] at (c1.north west) {\textcolor{blue}{\Huge $\bigstar$}};
 
 % --- Fila 2: chaotic.pdf (sin cambios) ---
 \foreach \i in {1,...,5} {
   \node (b\i) at ({(\i - 1) * 2.7}, -3.2) [anchor=north west, inner sep=0]
     {\includegraphics[width=0.19\linewidth, page=\i]{chaotic.pdf}};
 }
-\node[anchor=north west, xshift=-10pt, yshift=5pt] at (b1.north west) {\textcolor{blue}{\Huge $\bigstar$}};
+\node[anchor=north west, xshift=-10pt, yshift=5pt, text=orange!90!red] at (b1.north west)
+    {\Huge $\bigstar$};
 % --- Nueva fila 3: choi_purity.pdf (antes fila 1) ---
 \node (a1) at (0, -6.5) [anchor=north west, inner sep=0]
   {\includegraphics[width=1.1\linewidth]{choi_purity.pdf}};

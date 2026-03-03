@@ -1,0 +1,921 @@
+% !TeX spellcheck = en_US
+%\pdfoutput=1 
+% Preamble{{{
+% \documentclass[letterpaper,aps,pra,longbibliography,showpacs,floatfix,dvipsnames,10pt,twocolumn]{revtex4-2} 
+\documentclass[pra,twocolumn,aps,showpacs,superscriptaddress,longbibliography]{revtex4-2}
+
+\usepackage{mypreamble}
+
+\usepackage{overpic}
+\usepackage{ulem}
+\usepackage{orcidlink}
+
+% \usepackage[inline]{showlabels}
+% \renewcommand{\showlabelfont}{\footnotesize\color{gray}}
+% \renewcommand{\showlabelrefline}{\hrule width 0pt height -1.8ex depth 0pt}
+
+%\usepackage[mathlines]{lineno}% Enable numbering of text and display math
+%\setlength{\linenumbersep}{5pt} % Valor por defecto es 10pt, reduce a tu preferencia
+%\linenumbers\relax % Commence numbering lines
+
+% Comandos{
+\newcommand{\jami}{Choi-Jamiołkowski}
+%\newcommand{\choip}{\ev{\Tr(\mathcal{D}^2)}_{\mathrm{Haar}, t}}
+\newcommand{\choip}{\langle \text{Tr}[\mathcal{D}(t)^2] \rangle_{\mathrm{Haar}, t}}
+\newcommand{\statep}{\overline{\mathcal{P}}}
+\newcommand{\ratio}{\ev{\tilde r_n}}
+\newcommand{\one}{\mathcal{I}}
+\newcommand{\mlsr}{\ev{\tilde{r}}}
+%\newcommand{\mcP}{\mathcal{P}}
+\newcommand{\blue}{\color{blue}}
+
+\newcommand{\unam}{Universidad Nacional Aut\'onoma de M\'exico, Ciudad de M\'exico 04510, Mexico}
+\newcommand{\ifunam}{Instituto de F\'{\i}sica, \unam}
+\newcommand{\icn}{Instituto de Ciencias Nucleares, \unam}
+
+\newcommand{\pcsadd}{Center for Theoretical Physics of Complex Systems, Institute for Basic Science (IBS), Daejeon 34126, Republic of Korea}
+%}
+
+% DEBUGGING & ANNOTATIONS{
+%\RequirePackage[inline]{showlabels}
+%\renewcommand{\showlabelfont}{\footnotesize\color{gray}}
+%\renewcommand{\showlabelrefline}{\hrule width 0pt height -2ex depth 0pt}
+
+\usepackage[draft,inline,nomargin]{fixme}
+\fxsetup{theme=color}
+
+\definecolor{jacolor}{RGB}{200,40,0}
+\FXRegisterAuthor{ja}{aja}{\color{violet}JA}
+\FXRegisterAuthor{mg}{amg}{\color{red}Miguel}
+\FXRegisterAuthor{cd}{acd}{\color{green!50!black}Charly}
+
+\makeatletter
+% Parche para que listoffixmes funcione con REVTeX
+\def\@lox@prtc{\section*{\@fxlistfixmename}\begingroup\def\@dotsep{4.5}}
+\def\@lox@psttc{\endgroup}
+\makeatother
+%}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=blue,      
+  citecolor=blue,
+  urlcolor=blue,
+  pdftitle={},
+  pdfauthor={}
+}
+
+% Figs' directories
+%\graphicspath{{figures}}
+
+%}}}
+\begin{document}
+
+% Title, authors, affiliations{{
+\title{Choi echo: dynamical irreversibility and\\local decoherence in quantum many-body chaos}
+
+\author{Jose Alfredo de Leon \orcidlink{0000-0003-0045-9017}}\email{deleongarrido.jose@gmail.com}\affiliation{\ifunam}
+
+\author{Miguel Gonzalez\,\orcidlink{0009-0004-0112-5988}}
+  \email{miguel.gonzalez@correo.nucleares.unam.mx}
+  \affiliation{\icn}
+  \affiliation{\pcsadd}
+    
+\author{Carlos Diaz-Mejia \orcidlink{0000-0002-1942-8125} }\email{carlos.diaz@correo.nucleares.unam.mx} \affiliation{\icn}
+%}}
+
+% Abstract, keywords, pacs{
+\begin{abstract}
+Quantifying intrinsic irreversibility in open quantum dynamics is central to understanding decoherence and information loss in many-body systems. In this work, we introduce the Choi echo, which provides an operational interpretation of the purity of the Choi state, the state representation of a quantum channel, as a quantifier of the robustness of quantum correlations against local information erasure. We employ this framework to analyze the reduced dynamics of a subsystem and to test whether local decoherence probes quantum chaos in many-body systems. Across paradigmatic spin chain models, we show that while the Choi echo captures key dynamical features, it also exhibits intrinsic limitations that, in certain regions of parameter space, restrict its ability to resolve the integrable-to-chaos transition at the level of spectral correlations. In particular, we demonstrate that local decoherence can spuriously signal quantum chaos in integrable regimes, tracing them to the inability of a strictly local probe to distinguish efficient coherent transport from genuinely scrambling dynamics. Our results show that local decoherence signals are controlled by the entanglement generated between the probe and its environment during the dynamics, rather than by spectral correlations, clarifying the practical scope of local dynamical diagnostics.
+\end{abstract}
+\keywords{}
+\pacs{}
+%}
+ 
+\maketitle
+
+%\listoffixmes
+% I. Inroduction{
+\section{Introduction}
+Open quantum systems generically exhibit decoherence and information loss due to their coupling to uncontrolled environments. Quantifying the intrinsic irreversibility of such dynamics is central to modern quantum physics, as it connects the microscopic description of subsystem--environment interactions to practical benchmarks in quantum information processing~\cite{nielsen_2010_quantum, breuer_2002_theory}. In particular, characterizing the stability of reduced dynamics---for example, against perturbations or explicit information erasure---is essential for understanding phenomena ranging from the fidelity of quantum gates to the microscopic emergence of thermalization in many-body systems.
+For closed systems, the canonical tool to probe dynamical stability is the Loschmidt echo, which measures the recoverability of a quantum state under an imperfect time-reversal protocol~\cite{peres_1984_stability, gorin_2006_dynamics}. Recent experiments have implemented nested time-reversal sequences, such as higher-order out-of-time-order correlators (OTOCs), to diagnose ergodicity and scrambling through dynamical echoes~\cite{googleecho2025}. However, extending this operational notion of dynamical reversibility to the rigorous framework of open systems remains challenging. It requires a formalism that explicitly incorporates the non-unitary character of quantum channels and the irreversible erasure of information induced by the environment.
+In this work, we address this challenge by focusing on the fundamental object governing open-system dynamics: the quantum channel itself. Rather than tracking the evolution of specific state trajectories, which conflate initial conditions with dynamical properties, we exploit the isomorphism between quantum channels and quantum states~\cite{jamiolkowski_1972_linear, choi_1975_completely}. We introduce the \textit{Choi echo} as a rigorous probe of dynamical reversibility. Defined as the purity of the channel's Choi state, this metric provides an operational measure of the system's ability to preserve correlations against local erasure. By isolating the structural properties of the dynamical map, the Choi echo serves as a generalized indicator of how effectively an environment acts as a sink for quantum information, regardless of the microscopic mechanism driving the loss.
+
+This framework is particularly relevant for the study of quantum chaos in many-body systems. The onset of chaos is the microscopic mechanism that allows an isolated system to act as an efficient bath for its own subsystems, a process formalized by the Eigenstate Thermalization Hypothesis (ETH)~\cite{deutsch_1991_quantum, dalessio_2016_quantum}. Traditionally, diagnosing this regime relies on the spectral statistics of the Hamiltonian (e.g., the mean level spacing ratio $\langle \tilde{r} \rangle$), which require computationally prohibitive access to the full energy spectrum~\cite{bohigas_1984_characterization, scialchi_2024_integrabilitytochaos}. The challenges inherent to spectral diagnostics have motivated a shift toward local dynamical proxies, grounded in the observation that the decoherence dynamics of a single probe spin embedded in a spin chain can faithfully encode and reveal the spectral chaoticity of the entire many-body system~\cite{borgonovi_2025_timescales, mirkin_2021_quantum}.
+However, it remains an open question whether local irreversibility is a unique fingerprint of spectral chaos or if other dynamical regimes can mimic these signatures.
+
+We apply the Choi echo to scrutinize this local decoherence and spectral chaos correspondence in three paradigmatic spin chain models: the mixed-field Ising model, the random-field Heisenberg model, and the XXZ model with a local defect. Our results demonstrate that while the Choi echo is a superior diagnostic to state-based purities—resolving decoupling transitions with higher precision due to its sensitivity to unitality—it reveals a fundamental limitation of local probes. We report ``false positives'' for chaos in the integrable XXZ chain, where efficient coherent transport generates high local decoherence indistinguishable from chaotic scrambling. These findings elucidate that local probes primarily measure the strength of dynamical coupling and information propagation, challenging the assumption that local irreversibility, at least of a single spin, is a sufficient condition for identifying many-body quantum chaos.
+
+This paper is organized as follows. Section~\ref{sec:formalism} outlines the quantum channel formalism. Section~\ref{sec:interpretation} develops the operational interpretation of the Choi echo. Section~\ref{sec:chaos_probe} details the methodology for benchmarking the echo against spectral statistics. Section~\ref{sec:models_results} presents the physical models and the comparative numerical analysis. Finally, Section~\ref{sec:conclusions} summarizes our findings and their implications for the characterization of open quantum dynamics.
+%}
+%
+% II. Mathematical Framework...{
+\section{Mathematical Framework} \label{sec:formalism}
+
+\subsection{Quantum channels}\label{sec:reduced_dynamics}
+
+We describe the reduced dynamics of a quantum subsystem via the quantum channel formalism. Let $\mcE_t: \mathcal{B}(\mathcal{H}_S) \to \mathcal{B}(\mathcal{H}_S)$ denote the completely positive and trace-preserving (CPTP) map governing the evolution of the subsystem density matrix $\rho_S$ at time $t$~\cite{nielsen_2010_quantum,bengtsson_2006_geometry}.
+
+We consider a closed quantum system partitioned into a subsystem $S$ and an environment $E$. The global system evolves under a unitary operator $U$, which may arise either from continuous-time Hamiltonian dynamics or from a discrete sequence of gates. Assuming the total system is initialized in a product state $\rho_{SE}(0)=\rho_S\otimes\rho_E$, the reduced map $\mathcal{E}_t$ is obtained by tracing out the environment,
+\begin{equation}\label{eq:channel_def}
+\rho_S(t)=\mathcal{E}_t(\rho_S)=\operatorname{Tr}_E\!\left[\,U(\rho_S\otimes\rho_E)U^\dagger\,\right].
+\end{equation}
+Although the global evolution $U$ is reversible, the reduced dynamics is generally nonunitary due to system–environment entanglement. Equation~\eqref{eq:channel_def} provides a complete specification of the quantum channel $\mathcal{E}_t$ independently of the input state and constitutes the system–environment representation of $\mathcal{E}_t$.
+
+% \mgnote{i think the separation of this subsection is not essential, and we can make the separation later, when you start talking about the purity}
+% \subsection{The \jami{} isomorphism} \label{sec:cj_matrix}
+% Intro to Choi matrix
+The quantum channel $\mcE_t$ admits an equivalent representation as a quantum state via the Choi-Jamiolkowski  isomorphism~\cite{jamiolkowski_1972_linear,choi_1975_completely}. This duality establishes a one-to-one correspondence between any CPTP map and a positive semi-definite operator acting on a doubled Hilbert space.
+
+% Mathematical definition of the Choi matrix
+Let $\mathcal{H}_{S'}\simeq\mathcal{H}_S$ be an auxiliary space, and define the maximally entangled state $\ket{\Phi^+}=d_S^{-1/2}\sum_i \ket{i}_S\otimes\ket{i}_{S'}$, where $\{\ket{i}\}$ is an orthonormal basis of $\mathcal{H}_S$. The Choi state associated with $\mathcal{E}_t$ is
+\begin{equation}\label{eq:choi_def}
+\mathcal{D}(t)=(\mathcal{E}_t\otimes\mathcal{I}_{S'})\!\left(\dyad{\Phi^+}\right),
+\end{equation}
+where $\mathcal{I}_{S'}$ is the identity channel on $S'$~\cite{bengtsson_2006_geometry}. The operator $\mathcal{D}(t)$ acts on $\mathcal{H}_S\otimes\mathcal{H}_{S'}$ and uniquely encodes all properties of $\mathcal{E}_t$. The resulting matrix $\mcD(t)$ is a density matrix---i.e. a positive semi-definite matrix of unit trace---acting on the composite space $\mcH_S \otimes \mcH_{S'}$.
+% and uniquely encodes all properties of the channel $\mcE_t$.
+
+% Properties of the Choi matrix capture the properties of the corresponding channel
+The Choi state $\mcD(t)$ encodes fundamental properties of the corresponding quantum channel $\mcE_t$. 
+Complete positivity and trace preservation of $\mathcal{E}_t$ translate into $\mathcal{D}(t)\ge0$ and $\operatorname{Tr}_{S'}[\mathcal{D}(t)]=\mathbb{I}_S$, respectively. 
+The rank of $\mcD(t)$ equals the minimum environment dimension required for a \textit{minimal dilation} of $\mcE_t$---i.e., a system-environment representation of $\mcE_t$  [cf. Eq.~\eqref{eq:channel_def}] with the smallest environment dimension possible. Moreover, $\mcE_t$ is entanglement-breaking---erasing all quantum correlations between the system and any external system---if and only if the Choi state is separable across $S{:}S'$ bipartition.
+
+% \mgnote{Maybe a new section here? The following explanation goes beyond CJ iso. This section is the solid evidence that the Choi purity is better than the chaometer.}
+
+\subsection{Purity of the Choi state}
+% Purity of the Choi matrix
+A key scalar associated with the Choi state is its purity,
+\begin{equation}\label{eq:choi:purity}
+\operatorname{Tr}[\mathcal{D}(t)^2]
+= \sum_{k,l}\operatorname{Tr}\!\left[\mathcal{E}_t(\dyad{k}{l})\,\mathcal{E}_t(\dyad{l}{k})\right],
+\end{equation}
+which quantifies the coherence-preserving character of the channel. The second equality follows directly from the definition of the Choi state in Eq.~\eqref{eq:choi_def} and expresses the purity in terms of the action of the channel on the operator basis \(\{\dyad{k}{l}\}\) associated with an orthonormal basis \(\{\ket{k}\}\) of \(\mathcal{H}_S\). It satisfies
+\[
+\frac{1}{d_S^2}\le\operatorname{Tr}[\mathcal{D}(t)^2]\le 1.
+\]
+The upper bound is achieved if and only if the reduced dynamics is unitary, while the minimum corresponds to the completely depolarizing channel that maps any input state to the maximally mixed state $\mathbb{I}_S/d_S$.
+
+
+% Comparison with output-state purity
+This quantity distinguishes dynamical regimes that state-based metrics cannot. For example, a full amplitude-damping channel maps all pure inputs to a pure ground state, yielding an output-state purity $\operatorname{Tr}[\rho_S(t)^2]=1$ for any pure input, identical to that of a unitary process. However, their Choi purities differ sharply: $\operatorname{Tr}[\mathcal{D}^2]=1$ for a unitary channel and $1/2$ for full amplitude damping. The Choi purity therefore probes the process coherence rather than the purity of individual trajectories.
+
+% Notably, the Choi purity distinguishes dynamical regimes that output-state metrics, such as the subsystem state purity $\mathcal{P} = \Tr[\rho_S(t)^2]$, fail to resolve. Consider, for example, a single-qubit full amplitude-damping channel, which maps the entire Bloch sphere to the ground state~\cite{nielsen_2010_quantum}. For any pure input, this channel produces a pure output ($\mathcal{P}=1$). Consequently, based solely on state purity, this dissipative process is indistinguishable from a unitary evolution, as both yield $\mathcal{P}=1$. In contrast, the Choi purity strictly differentiates them: it yields $\Tr[\mcD^2] = 1$ for a unitary map but $\Tr[\mcD^2] = 1/2$ for the full amplitude-damping channel, correctly identifying the latter's irreversible loss of structural information. Thus, $\Tr[\mcD(t)^2]$ measures the preservation of the process coherence, distinct from the purity of a specific trajectory.
+
+% To rigorously understand the relationship between these metrics, we derive an analytical relationship linking the Choi purity to the output state purity averaged over all possible inputs. Averaging over the ensemble of pure input states $\ket{\psi}$ drawn from the Haar measure, the expected output purity for the subsystem takes the form:
+% \begin{equation}\label{eq:purity_relation}
+% \begin{split}
+% \mathbb{E}\Big[\Tr\big[\mcE_t(\dyad{\psi})^2\big]\Big] &= \frac{1}{d_S(d_S+1)} \Big( \Tr\big[\mathcal{E}_t(\mathbb{I}_S)^2\big] \\
+% &\hspace*{2.1cm} + d_S^2 \Tr\big[\mathcal{D}(t)^2\big] \Big),
+% \end{split}
+% \end{equation}
+% where we have used the identity $\Tr[(A \otimes B)\mathbb{S}] = \Tr[AB]$ (with $\mathbb{S}$ representing the swap operator) and the properties of the Haar average of the two-copy projector onto the symmetric subspace~\cite{mele_2024_introduction}. Since $\Tr[\mathcal{E}_t(\mathbb{I}_S)^2] \ge d_S$, with equality holding if and only if $\mathcal{E}_t$ is unital (i.e., $\mathcal{E}_t(\mathbb{I}_S) = \mathbb{I}_S$), this term quantifies the deviation of the channel from unitality~\cite{preski}.
+
+% Equation~\eqref{eq:purity_relation} reveals that the average state purity is governed by two contributions: the Choi purity $\Tr[\mathcal{D}(t)^2]$, which reflects the intrinsic coherence-preserving character of the channel, and the unitality term $\Tr[\mathcal{E}_t(\mathbb{I}_S)^2]$. For unital maps, the first term is constant ($d_S$), rendering the state purity strictly proportional to the Choi echo. However, for non-unital processes—such as the amplitude damping channel discussed above—the term $\Tr[\mathcal{E}_t(\mathbb{I}_S)^2]$ grows significantly. This increase compensates for the decay in Choi purity, maintaining a high state purity despite the irreversible nature of the dynamics. Thus, Eq.~\eqref{eq:purity_relation} mathematically clarifies why the output state purity fails to detect irreversibility in regimes where the channel drives the system toward a pure state rather than the maximally mixed state.
+
+To clarify the relation between the Choi and output-state purities, we derive the Haar-averaged output purity over pure inputs $\ket{\psi}$. Using standard identities for Haar integration~\cite{mele_2024_introduction}, we obtain
+\begin{equation}\label{eq:purity_relation}
+\begin{split}
+\mathbb{E}\!\left[\operatorname{Tr}\!\left(\mathcal{E}_t(\dyad{\psi})^2\right)\right]
+&=\frac{1}{d_S(d_S+1)}\bigg(
+\operatorname{Tr}\!\left[\mathcal{E}_t(\mathbb{I}_S)^2\right] \\
+&\hspace{1.6cm} + d_S^2\,\operatorname{Tr}\!\left[\mathcal{D}(t)^2\right]
+\bigg).
+\end{split}
+\end{equation}
+The term $\operatorname{Tr}[\mathcal{E}_t(\mathbb{I}_S)^2]$ quantifies deviations from unitality, since $\operatorname{Tr}[\mathcal{E}_t(\mathbb{I}_S)^2]\ge d_S$ with equality if and only if $\mathcal{E}_t$ is unital.
+
+Equation~\eqref{eq:purity_relation} shows that the average state purity contains two independent contributions: the Choi purity $\operatorname{Tr}[\mathcal{D}(t)^2]$, capturing the intrinsic coherence preservation of the channel, and the unitality term, reflecting population-transfer effects. For unital channels, $\operatorname{Tr}[\mathcal{E}_t(\mathbb{I}_S)^2]=d_S$, making the averaged output purity directly proportional to the Choi purity. For non-unital processes such as amplitude damping, the unitality term grows substantially, compensating for the decay of $\operatorname{Tr}[\mathcal{D}(t)^2]$ and thereby obscuring irreversibility when assessing only output-state purity. Thus, Eq.~\eqref{eq:purity_relation} clarifies why state purity alone fails to detect structural information loss in nonunital dynamics.
+%}
+%
+% Fig 1{{
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{figures/cj_purity.pdf}
+\caption{Spectral and single-spin dynamical behavior in regular and chaotic regimes of the mixed-field Ising model [\Eref{eq:H:ising}]. Panel (a) corresponds to an integrable regime [$(h_z, J) = (1.446, 0.05)$] and the panel (b) to a chaotic regime [$(h_z, J) = (0.48, 0.8)$], with fixed $h_x=1$. \textbf{(a1), (b1)} Distribution of nearest-neighbor level spacing ratios $P(\tilde{r})$ for $L=16$ (even sector), compared to Poisson (red dashed) and GOE (blue dashed) predictions. \textbf{(a2), (b2)} Action of the quantum channel $\mcE_t$ on the Bloch sphere of the probe spin ($L=7$). The chaotic channel induces a rapid contraction of the sphere volume, contrasting with the coherent precession in the regular case. \textbf{(a3), (b3)} Time evolution of the Choi echo $\Tr[\mcD(t)^2]$ ($L=7$). Low-opacity lines represent single realizations with random initial product states of the environment; the thick purple line corresponds to the analytical Haar-averaged Choi echo $\mathbb{E}[\Tr[\mathcal{D}^{2}(t)]]$ derived in Eq.~\eqref{eq:haar:avg:choi}.}
+\label{fig:cj:purity}
+\end{figure*}
+%}}
+%
+% III. The Choi echo: operational interpretation of the Choi purity{
+\section{The Choi echo: operational interpretation of the Choi purity}\label{sec:interpretation}
+% Intro of the section: Establishing the thesis (General context)
+We now establish an operational interpretation of the Choi purity [cf.~Eq.~\eqref{eq:choi:purity}] by showing that it plays the role of an echo quantifying recoverability under local loss of information. In this formulation, the Choi purity is not merely a static functional of the channel, but a probe of dynamical reversibility analogous in structure to an echo protocol. This perspective highlights its ability to diagnose how strongly the global evolution becomes irreversibly correlated with degrees of freedom that are inaccessible to the subsystem.
+
+% Loshmidt echo, definition and context (Broad context)
+The Loschmidt echo is a fundamental tool for characterizing the stability of quantum evolution, widely employed in contexts ranging from decoherence theory to critical many-body phenomena~\cite{peres_1984_stability,gorin_2006_dynamics}. Defined as $L(t) = |\langle \psi_0 | e^{i (H+\Sigma) t} e^{-i H t} | \psi_0 \rangle|^2$, it quantifies the ability of a system to recover its initial state after a forward evolution $H$, a perturbation $\Sigma$, and a backward evolution. Its decay reflects the system’s sensitivity to perturbations and serves as a canonical measure of dynamical irreversibility.
+
+% Equation of the Choi purity for our novel operational interpretation
+In contrast to perturbations of the Hamiltonian, the Choi purity  $\Tr[\mcD(t)^2]$ acts as an echo that probes the stability of the global evolution against a \textit{local} loss of information. Consider the channel $\mathcal{E}_t$ induced by the joint unitary $U(t)$ acting on the initially uncorrelated state $\rho_S\otimes\rho_E$, with $\rho_E=\dyad{\psi}$ any pure state. Combining the Choi definition in \Eref{eq:choi_def} with the system–environment representation of the channel in \Eref{eq:channel_def}, the purity of the Choi state can be recast in the form
+\begin{equation}\label{eq:choi_as_le}
+\Tr(\mcD^2) = \Bigg\langle\psi\Bigg|
+\Tr_S\Bigg[
+U^\dagger \Lambda_S \bqty{
+U \pqty{\frac{\mathbb{I}_S}{d_S} \otimes \dyad{\psi} } U^\dagger
+} U
+\Bigg]
+\Bigg|\psi\Bigg\rangle.
+\end{equation}
+Here, $\Lambda_S(\cdot) = (\mathbb{I}_S/d_S)\Tr_S(\cdot)$ represents the completely depolarizing channel acting locally on the subsystem $S$. 
+% \mgnote{it's not completely obvious to me that is the depolarizing channel}
+% \janote{Propongo que lo dejemos así. Es un detalle más de las cuentas matemáticas y, más importante, lo dejamos para que un árbitro lo pregunte}
+For compactness, we have suppressed the explicit time arguments in this expression, denoting $U \equiv U(t)$ and $\mcD \equiv \mcD(t)$.
+
+% Operational meaning of the Choi purity and discussion
+Equation~\eqref{eq:choi_as_le} shows that $\operatorname{Tr}[\mathcal{D}(t)^2]$ is the fidelity with which the environment returns to its initial state after a three-step protocol:  
+\begin{enumerate}
+\item A forward evolution under $U$, starting from a product state in which $S$ carries no information,
+\item A local ``perturbation'' is applied via a completely depolarizing channel $\Lambda_S$, on the system $S$ only, that breaks all entanglement between $S$ and $E$ acquired during the forward evolution.
+\item A backward evolution under $U^\dagger$.  
+\end{enumerate}
+The Choi purity therefore quantifies the recoverability of the environment following the loss of subsystem information and plays the role of an \textit{echo}. In consequence, we refer to this quantity as the \textit{Choi echo}.
+
+% Because the Choi state is a basis-independent representation of the channel, the Choi echo characterizes reversibility at the level of the reduced dynamics, not of a particular system–environment decomposition. A high echo fidelity indicates that the forward evolution generated only weak non-local correlations, allowing the global state to be reversed even after the subsystem is depolarized. A decaying echo reveals dynamical irreversibility: correlations between $S$ and $E$ have become sufficiently complex that severing them at the subsystem destroys the ability to reconstruct the global state.
+
+% % Broader Context and Relevance (General applicability)
+% This operational perspective positions the Choi echo as a tool for diagnosing irreversibility and information scrambling in many-body systems. Unlike entropy-based indicators, which quantify locally inaccessible information, or out-of-time-ordered correlators (OTOCs), which probe operator growth, the Choi echo directly measures the recoverability of global dynamics in the presence of local information loss. Its reliance on the channel alone makes it broadly applicable across contexts ranging from thermalization and localization to signatures of quantum chaos in interacting systems.
+
+% \mgnote{
+Since the Choi state provides a basis-independent representation of the channel, the Choi echo quantifies reversibility at the level of the reduced dynamics. A high echo fidelity signifies that the forward evolution has generated only weak non-local correlations, so that the global state remains recoverable even after the subsystem has been depolarized. Conversely, a decaying echo signals dynamical irreversibility: correlations between \(S\) and \(E\) have become sufficiently intricate that severing them at the subsystem level eliminates the possibility of reconstructing the global state. This operational viewpoint identifies the Choi echo as a tool for diagnosing irreversibility and information scrambling in many-body systems. In parallel to entropy-based indicators, which quantify locally inaccessible information, and out-of-time-ordered correlators (OTOCs), which probe operator growth, the Choi echo provides a direct measure of the recoverability of global dynamics in the presence of local information loss.
+% }
+
+%}
+%
+% IV. Choi echo as a local probe{
+\section{The Choi echo as a probe for quantum chaos}\label{sec:chaos_probe}
+% \janote{Para referencia: Aquí hay cosas comentadas}
+%{\color{jacolor}
+%% Establecer el contexto general y la importancia
+%% fundamental de detectar el caos cuántico de muchos cuerpos.
+%The characterization of quantum chaos in many-body systems is a
+%fundamental pursuit that bridges quantum mechanics and statistical
+%mechanics~\cite{bohigas_1984_characterization, deutsch_1991_quantum, srednicki_1994_chaos, rigol_2008_thermalization}.
+%The onset of chaos is intrinsically linked to
+%the mechanism of thermalization in isolated quantum systems, as
+%formalized by the Eigenstate Thermalization Hypothesis (ETH)~\cite{dalessio_2016_quantum, deutsch_1991_quantum, srednicki_1994_chaos}.
+%Understanding this connection is critical for topics ranging from
+%many-body localization
+%(MBL)~\cite{nandkishore_2015_manybody, abanin_2019_colloquium, pal_2010_manybody} and the scrambling of quantum
+%information~\cite{shenker_2014_black, maldacena_2016_bound, swingle_2018_unscrambling, xu_2020_does} to the dynamics of black
+%holes~\cite{maldacena_2016_bound, balasubramanian_2025_quantum} and
+%the stability of quantum computation~\cite{georgeot_2000_emergence, c_2025_disordering}.
+%
+%% Introducir el "gold standard" (RMT / la r) y su
+%% limitación computacional y experimental fundamental.
+%The canonical diagnostic for quantum chaos is rooted in random
+%matrix theory (RMT)~\cite{bohigas_1984_characterization, mehta_2004_random}. The spectral statistics of chaotic
+%Hamiltonians exhibit level repulsion, mirroring the predictions of
+%RMT, while integrable systems display uncorrelated level spacings
+%described by a Poisson distribution~\cite{berry_1977_level, akhshani_2025_statistical}. In modern practice,
+%this is robustly quantified by the mean level spacing ratio,
+%$\langle \tilde{r} \rangle$~\cite{oganesyan_2007_localization, atas_2013_distribution}, which avoids the complexities
+%of spectral unfolding~\cite{oganesyan_2007_localization}. However, calculating $\langle
+%\tilde{r} \rangle$ requires \cdnote*{o the entire knowledge of the spectrum, ESTILO}{\color{blue}full exact diagonalization}\janote{de acuerdo, la propuesta de Charly incluye el POV experimental. Cambio:}
+%However, calculating $\ev{r}$ requires access to the full spectrum, 
+%a task that grows computationally and experimentally intractable with 
+%increasing system size for typical many-body systems.~\cite{scialchi_2024_integrabilitytochaos}. This diagnostic is also inaccessible in experimental
+%platforms, such as ion traps or cold atoms, which are designed to
+%probe dynamics rather than the full energy spectrum~\cite{das_2025_proposal, vallejo-fabila_2025_singlesite}.
+%\mgnote{This paragraph could be the initial one, specially the $\langle
+%\tilde{r} \rangle$ discussion, which motivates the introduction of local probes.}
+%
+%% Introducir la hipótesis del "proxy" (dinámica local,
+%% \statep) y los trabajos que la han validado.
+%This limitation motivates an intensive search for simpler,
+%computationally feasible, and experimentally accessible dynamical
+%proxies for quantum chaos~\cite{das_2025_proposal, scialchi_2024_integrabilitytochaos, c_2025_disordering}. 
+%A central hypothesis has emerged, suggesting that the dynamics of a local 
+%subsystem can serve as a faithful indicator of \janote{\sout{global,}} many-body chaos~\cite{dalessio_2016_quantum, borgonovi_2025_timescales}. A
+%prominent candidate is the averaged subsystem state purity,
+%$\overline{\mathcal{P}}$, which quantifies the equilibration of a
+%single probe spin coupled to the rest of the chain. Recent work
+%demonstrated a strong anti-correlation between $\overline{\mathcal{P}}$
+%and $\langle \tilde{r} \rangle$ across several spin models, seemingly
+%validating single-spin decoherence as a reliable proxy for the
+%integrability-to-chaos transition~\cite{mirkin_2021_quantum}.
+%
+%%promediado sobre estados iniciales
+%The quantum channel $\mcE_t$, as defined in \Eref{eq:channel_def}, depends
+%explicitly on both the unitary evolution $U(t)$ and the initial
+%environment state $\rho_E$. In our setup, the evolution is governed
+%by the Hamiltonian $H$ via $U(t) = e^{-iHt}$. We aim to
+%characterize the generic dynamical properties encoded in $H$---which
+%determines the system's chaotic or integrable nature---rather than
+%properties tied to a specific initial state $\rho_E$.
+%We therefore average over an ensemble of initial environment
+%states. This procedure ensures our final indicator depends only on the
+%statistical properties of the chosen ensemble, not on any particular member.
+%Specifically, we consider pure product states of the form
+%$\rho_E = \bigotimes_{j \in E} \dyad{\psi_j}$, where each spin state
+%$\ket{\psi_j}$ is drawn independently from the Haar measure.
+%This ensemble average corresponds to an infinite-temperature condition~\footnote{\janote{When averaged over the Haar measure, a single spin state $\dyad{\psi_j}$ becomes the maximally mixed state $\mathbb{I}/2$. The full environment state $\rho_E$, being a tensor product of $L-1$ such states, thus averages to $\langle \rho_E \rangle = \mathbb{I}_E / 2^{L-1}$, which is the state of infinite-temperature equilibrium.}},
+%ensuring that the dynamics samples the entire energy spectrum. 
+%
+%% Declarar la metodología del benchmark y el resultado
+%% principal de que la correspondencia falla.
+%We perform a systematic benchmark of all three indicators---the
+%spectral $\mlsr$, the state purity $\statep$, and our channel purity
+%$\choip$---across the regular-to-chaos transition. We employ
+%three paradigmatic one-dimensional spin-1/2 chain models: the
+%mixed-field Ising model~\cite{kim_2014_testing, borgonovi_2016_quantum}, the Heisenberg model with random
+%fields~\cite{oganesyan_2007_localization, luitz_2015_manybody}, and the XXZ model with a local defect~\cite{santos_2004_integrability, brenes_2018_hightemperature}. We compute this ensemble average analytically, as detailed
+%in Appendix~\ref{app:haar}, yielding
+%\begin{widetext}
+%\begin{equation}\label{eq:haar:avg:choi}
+%\mathbb{E}\Big[\Tr\bqty{\mathcal{D}^{2}(t)}\Big] 
+%= 
+%\frac{1}{12^{L-1}} \sum_{\vec{\alpha} \in \{0,x,y,z\}^{L-1}}
+%  3^{\frac{1}{2}\qty(L - 1 - w(\vec{\alpha}))}
+%\Tr \Big[ \Tr_S^2 \big[U(t)
+%\qty(\sigma_1^0 \sigma_2^{\alpha_2} \ldots \sigma_L^{\alpha_L})
+%U^\dagger(t) \big] \Big] \, ,
+%\end{equation}
+%\end{widetext}
+%where $\vec{\alpha} = (\alpha_2, \dots, \alpha_L)$ is a vector of Pauli
+%indices from the set $\{0,x,y,z\}^{L-1}$, $\sigma_j^0$ is the
+%identity operator on the spin $j$, and $w(\vec{\alpha})$ counts the
+%number of non-identity operators ($\alpha_i \neq 0$) in the
+%environment's tensor product. \janote{Me acabo de dar cuenta que traza de la pureza de Choi debe poderse promediar sobre un entorno de máximo $d_E=4$. Quizás lo podemos poner como curiosidad o trabajo futuro} \mgnote{A mi si me interesa eso.}
+%The result of this average, $\mathbb{E}[\Tr[\mathcal{D}^{2}(t)]]$,
+%is plotted as the thick purple lines in
+%Figs.~\ref{fig:cj:purity}(a3) and \ref{fig:cj:purity}(b3).
+%This curve provides a representative measure of the dynamics
+%induced by $H$, averaged over the initial environmental
+%configurations.
+%}
+
+% Mini intro and context of quantum chaos
+The characterization of quantum chaos in many-body systems is central to understanding thermalization, information scrambling, and the emergence of statistical mechanics from unitary dynamics~\cite{dalessio_2016_quantum}. Quantum-chaotic behavior manifests itself through several universal features: (i) spectral statistics governed by Random Matrix Theory (RMT)~\cite{bohigas_1984_characterization}, (ii) eigenstate properties consistent with the eigenstate thermalization hypothesis (ETH)~\cite{deutsch_1991_quantum}, and (iii) extreme sensitivity to perturbations, captured by Loschmidt echoes and out-of-time-ordered correlators (OTOCs). These signatures reflect distinct facets of the same phenomenon—namely, the progressive spreading of quantum information over the many-body Hilbert space. In practice, however, diagnosing chaos is challenging: spectral probes require access to the dense interior of the spectrum, while OTOCs and echo protocols demand controlled perturbations and precise reversals~\cite{bardarson2012unbounded,santos2010onset,alba2017entanglement,smith2016many}. This motivates the development of diagnostics that are more computationally tractable and physically accessible.
+
+% The spectral metric: Mean Level Spacing Ratio
+Focusing first on spectral indicators, chaotic systems display level repulsion consistent with RMT, whereas integrable models exhibit the uncorrelated spectrum characteristic of Poisson statistics~\cite{berry_1977_level}. A robust measure of these short-range correlations is the mean level spacing ratio $\langle \tilde{r} \rangle$, defined as the average of $\tilde{r}_n = \min(s_n, s_{n-1})/\max(s_n, s_{n-1})$ for consecutive spacings $s_n = E_{n+1} - E_n$, evaluated within a fixed symmetry sector~\cite{oganesyan_2007_localization}. As illustrated in Figs.~\ref{fig:cj:purity}(a1) and (b1) for the mixed-field Ising chain [cf.~Eq.~\eqref{eq:H:ising}], the empirical distribution shifts from the Poissonian form,
+\(
+P_{\text{P}}(\tilde{r}) = 2/(1+\tilde{r})^2,
+\)
+to the Wigner-Dyson surmise characteristic of the Gaussian Orthogonal Ensemble (GOE),
+\(
+P_{\text{GOE}}(\tilde{r}) = 8(\tilde{r} + \tilde{r}^2) / [7(1+\tilde{r}+\tilde{r}^2)^{5/2}],
+\)
+marking the transition from integrable to chaotic behavior~\cite{atas_2013_distribution}.  
+Although higher-order ratios mitigate the need for explicit desymmetrization~\cite{tekur_2020_symmetry}, all spectral probes fundamentally require resolving large portions of the many-body spectrum, a task that becomes prohibitive for large Hilbert spaces~\cite{scialchi_2024_integrabilitytochaos, bernien2017probing, huang2020predicting, brydges2019probing}.
+
+% State purity of reduced subsystems as local probe for the onset of quantum chaos
+These limitations have motivated the search for accessible dynamical probes. Under chaotic dynamics, canonical typicality implies that small subsystems equilibrate toward stationary states that depend only on global conserved quantities~\cite{goldstein_2006_canonical, rigol_2008_thermalization}. In the context of spin chains, the degree of equilibration of a single probe spin---typically identified with the first site of the chain---has been shown to correlate strongly with spectral signatures of chaos of the entire many-body system~\cite{mirkin_2021_quantum}. Quantitatively, this is captured by the averaged subsystem purity,
+\begin{equation}\label{eq:avg:P}
+\overline{\mathcal{P}}=\frac{1}{N}\sum_{i=1}^N
+\left(\frac{1}{T}\int_0^T \Tr[\rho_{S,i}^2(t)]\,dt\right),
+\end{equation}
+computed over $N$ random initial product states and a time window $[0,T]$. Across diverse spin models, $\overline{\mathcal{P}}$ exhibits a strong anticorrelation with $\langle \tilde{r} \rangle$, suggesting that local decoherence can serve as an experimentally friendly probe of the integrability-to-chaos transition.
+
+However, a fundamental question remains: does local decoherence provide an unambiguous signature of many-body chaos, or can integrable dynamics produce similar behavior through mechanisms such as coherent transport? To address this, we employ the Choi echo framework introduced in Sec.~\ref{sec:interpretation}, applied to one-dimensional spin-$1/2$ chains of length $L$. We partition the system such that the first spin acts as the probe $S$, while the remaining $L-1$ spins form the environment $E$. The probe’s reduced dynamics are encoded in the quantum channel $\mathcal{E}_t$ generated by the global unitary $U(t)=e^{-iHt}$ [cf.~Eq.~\eqref{eq:channel_def}]. As shown in Figs.~\ref{fig:cj:purity}(a2) and (b2), integrable evolution preserves a coherent Bloch-sphere trajectory, whereas chaotic evolution induces a rapid contraction of the Bloch volume, signaling strong decoherence. Unlike state purity, which depends on the specific initial condition, the Choi echo $\Tr[\mathcal{D}(t)^2]$ probes the intrinsic reversibility of the channel itself. By quantifying the stability of global correlations against a depolarizing operation on the probe, it provides a stricter and state-independent diagnostic of decoherence.
+
+To isolate the generic dynamical properties of the Hamiltonian $H$ from specific initial states of the environment, we compute the analytical Haar average of the Choi echo over product states of the environment. Each environmental spin state is drawn independently from the Haar measure, a procedure corresponding to an infinite-temperature average~\footnote{When averaged over the Haar measure, a single spin state $\dyad{\psi_j}$ becomes the maximally mixed state $\mathbb{I}/2$. The full environment state $\rho_E$, being a tensor product of $L-1$ such states, thus averages to $\langle \rho_E \rangle = \mathbb{I}_E / 2^{L-1}$, which is the state of infinite-temperature equilibrium.}. As derived in Appendix~\ref{app:haar}, this yields:
+\begin{align}\label{eq:haar:avg:choi}
+\mathbb{E}\bqty{\Tr\pqty{\mathcal{D}^{2}}} =& 
+% \frac{1}{4^{L-1}} 
+\sum_{\vec{\alpha} }
+% \in \{0,x,y,z\}^{L-1}}
+  \frac{4^{-L}}{3^{w(\vec{\alpha})}}
+\Tr \Big[ \Tr_S^2 \big[U
+\qty(\sigma_1^0 \sigma_2^{\alpha_2} \ldots \sigma_L^{\alpha_L})
+U^\dagger \big] \Big],
+\end{align}
+where $\vec{\alpha} \in \{0,x,y,z\}^{L-1}$, and for compactness we have  suppressed the explicit time dependence. Here $\sigma_j^\mu$ denotes the Pauli 
+operator labeled by $\mu \in \{0,x,y,z\}$ acting on site $j$ (with $\sigma^0 \equiv \mathbb{I}$), 
+and $w(\vec{\alpha})$ counts the number of non-identity operators in the 
+environment string $\vec{\alpha} = (\alpha_2, \dots, \alpha_L)$. This analytical average is depicted in Figs.~\ref{fig:cj:purity}(a3) and (b3), where the Haar-averaged Choi echo (thick line) effectively filters out the fluctuations inherent to single environment realizations (low-opacity lines). To construct a direct analogue of $\langle \tilde{r} \rangle$ and $\overline{\mathcal{P}}$, we also average in time the Haar-averaged Choi echo:
+\begin{equation}\label{eq:avg:CJ}
+\expval{\Tr[\mcD(t)^2]}_{\text{Haar}, t} = \frac{1}{T}
+\int_{0}^{T} \mathbb{E}\Big[\Tr[\mathcal{D}^{2}(t)]\Big] \, dt .
+\end{equation}
+The next section compares $\langle \tilde{r} \rangle$, $\overline{\mathcal{P}}$, and the Haar-averaged Choi echo across different models and parameter regimes.
+%}
+%
+% V. Model Systems and Numerical Analysis{
+\section{Model Systems and Numerical Analysis}\label{sec:models_results}
+
+We now assess the performance of the Choi echo as a dynamical probe for the transition to quantum chaos. To this end, we analyze three paradigmatic one-dimensional spin-$1/2$ models that exemplify distinct mechanisms of integrability breaking—competing fields, quenched disorder, and local defects. This diversity provides a stringent test of whether the echo can meaningfully separate chaotic from non-chaotic dynamics using only local information.
+
+\subsection{Spin Chain Hamiltonians}\label{sec:spin_chains}
+
+% Fig 2, mapas ising{
+\begin{figure*}
+\includegraphics[width=\textwidth]{figures/ising.pdf}
+\caption{Comparison of short-range spectral statistics and local dynamical probes for the mixed-field Ising model [\Eref{eq:H:ising}] as a function of $h_z/h_x$ and $J/h_x$. \textbf{(a)} Mean level spacing ratio $\langle \tilde{r} \rangle$, computed for $L = 16$ within the even symmetric sector. \textbf{(b)}, \textbf{(c)} Local dynamical probes computed for the spin at the first site ($L = 7$): \textbf{(b)} averaged subsystem state purity $\statep$ [\Eref{eq:avg:P}] ($N=50$, $T=100$); \textbf{(c)} averaged Choi echo $\choip$ [\Eref{eq:avg:CJ}] ($T=100$). The horizontal red dashed line ($J/h_x=1$) indicates the parameter cut where the correspondence between $\mlsr$ and $\statep$ was analyzed in Ref.~\cite{mirkin_2021_quantum} for $h_z/h_x \in [0, 2.5]$.}
+\label{fig:cj:purity:ising}
+\end{figure*}
+%}
+
+\subsubsection{Mixed-field Ising model}\label{sec:ising}
+We first consider the mixed-field Ising model with open boundary conditions, described by the Hamiltonian:
+\begin{equation}\label{eq:H:ising}
+H = \sum_{i=1}^L \left( h_x \sigma_i^x + h_z \sigma_i^z \right) - J \sum_{i=1}^{L-1} \sigma_i^z \sigma_{i+1}^z \, ,
+\end{equation}
+where $\sigma_i^\alpha$ ($\alpha \in \{x,y,z\}$) are Pauli operators, $L$ is the chain length, $J$ is the nearest-neighbor Ising interaction, and $h_x, h_z$ are transverse and longitudinal field strengths. This model possesses a global spatial reflection symmetry $\mathcal{R}$ ($i \leftrightarrow L-i+1$), decomposing the Hilbert space into even and odd parity sectors. The model is integrable in two limits: the transverse-field Ising model ($h_z = 0$), solvable via Jordan-Wigner transformation~\cite{sachdev_2011_quantum}, and the so-called classical Ising model ($h_x = 0$)~\cite{baxter_2007_exactly}. When $J=0$, the system decouples into a non-interacting set of $L$ spins. The simultaneous presence of all three terms breaks integrability, rendering it a standard testbed for quantum chaos~\cite{kim_2014_testing,garrison_2018_does,borgonovi_2016_quantum}. Notably, it has been rigorously proven that for any non-zero $J$, $h_x$, and $h_z$, the model possesses no non-trivial local conserved quantities~\cite{chiba_2024_proof}. The chaotic regime is frequently studied using parameters where all three terms are of comparable magnitude, $J \sim h_x \sim h_z$, as this maximizes the non-commutation responsible for driving chaotic behavior~\cite{karthik_2007_entanglement,atas_2017_quantum,camargo_2024_spread}.
+
+\subsubsection{Heisenberg model with random fields}\label{sec:heisenberg}
+Next, we examine the Heisenberg model with random fields:
+\begin{equation}\label{eq:H:heisenberg}
+H = \frac{1}{4}\sum_{i=1}^{L-1} \left(\vec{\sigma}_i \cdot \vec{\sigma}_{i+1}\right) + \frac{1}{2}\sum_{i=1}^L h_i \sigma_i^z \, ,
+\end{equation}
+where $h_i$ are independent random variables drawn uniformly from the interval $[-h, h]$, and $h$ denotes the disorder strength. This model conserves the total magnetization $M_z = \sum_i \sigma_i^z$. This $U(1)$ symmetry is equivalent to conserving the total number of up spins, $N_{\uparrow}$, related to the magnetization via $\ev{M_z} = 2N_{\uparrow} - L$. The clean limit ($h=0$) is integrable by Bethe-anzats~\cite{bethe_1931_zur}. For $h>0$, integrability is broken. This Hamiltonian describes the transition from an ergodic or thermal phase ($h \lesssim 3.5$) to a many-body localized (MBL) phase at strong disorder~\cite{oganesyan_2007_localization,luitz_2015_manybody,abanin_2019_colloquium}.
+
+\subsubsection{XXZ model with a local defect}\label{sec:xxz}
+Finally, we study the XXZ model with a single local defect:
+\begin{equation}\label{eq:H:xxz}
+H = \frac{1}{4}\sum_{i=1}^{L-1} \left[ J_{xy} (\sigma_i^x\sigma_{i+1}^x + \sigma_i^y\sigma_{i+1}^y) + J_z \sigma_i^z\sigma_{i+1}^z \right] + \frac{1}{2}\varepsilon \sigma_d^z \, .
+\end{equation}
+Here, $J_{xy}$ and $J_z$ are anisotropic interaction strengths, and $\varepsilon$ is the field strength at a defect site $d$. Like the Heisenberg model, this system conserves $M_z$. The defect is placed near the center to break spatial reflection symmetry explicitly. For $\varepsilon = 0$, the model is integrable~\cite{bethe_1931_zur}. A non-zero defect $\varepsilon \neq 0$ breaks integrability~\cite{santos_2004_integrability,brenes_2018_hightemperature,pandey_2020_adiabatic}, providing a minimal model where chaos is induced solely by a local perturbation on a single site. We note that in the limit $\varepsilon \gg 1$, the chain effectively decouples into two non-interacting parts.
+
+\subsection{Results}\label{sec:results_discussion}
+% We benchmark the averaged Choi echo, $\expval{\Tr[\mcD^2]}_{\text{Haar},t}$ (denoted hereafter as $\choip$), against the averaged subsystem state purity $\statep$ and the mean level spacing ratio $\expval{\tilde{r}}$. Both purities are computed for the probe spin at the first site ($i=1$).
+
+% The subsystem purity $\statep$ [Eq.~\eqref{eq:avg:P}] is computed by averaging over $N=50$ random product initial states and a time interval $[0, T]$ with $T = 100$. Similarly, the Choi echo $\choip$ [Eq.~\eqref{eq:avg:CJ}] is time-averaged over the same interval, evaluating the Haar average analytically via Eq.~\eqref{eq:haar:avg:choi}. We verified that the intensity maps remain qualitatively invariant for system sizes $3 \le L \le 7$ (data for $L < 7$ not shown). Consequently, given this robustness and the exponential cost of evaluating the $4^L$ terms in Eq.~\eqref{eq:haar:avg:choi} at every time step, we present results for $L=7$. This choice is further justified physically by the nearest-neighbor nature of the interactions in our models. Since the probe spin couples directly only to its immediate neighbor, the local energy scale and the mechanism initiating information outflow are independent of the total chain length. In contrast, to ensure robust spectral statistics, $\expval{\tilde{r}}$ is computed via exact diagonalization for larger systems ($L=16$ or $L=18$) within specific symmetry sectors. This difference in system sizes imposes a stringent test on the dynamical probes: can they predict the same transition to quantum chaos using only a local observation?
+
+We benchmark the Haar- and time-averaged Choi echo $\choip$ [Eq.~\eqref{eq:avg:CJ}] against two reference indicators:  
+(i) the averaged subsystem state purity $\statep$ [Eq.~\eqref{eq:avg:P}], and  
+(ii) the mean level spacing ratio $\langle \tilde{r} \rangle$, which provides the spectral ground for quantum many-body chaos. While both purities are computed for small chains ($L=7$) with the probe at site $1$, the spectral statistics are evaluated via exact diagonalization on significantly larger systems ($L=16$ or $L=18$). This mismatch in system sizes imposes a stringent requirement: a reliable local dynamical probe must be robust to finite-size effects and must recover the chaotic transition inferred from the spectral benchmark.
+
+% Ising
+\subsubsection{Resolving chaos and decoupling in the mixed-field Ising model}
+% Presentar detalles cálculos y comentar que la resolución es mejor con el echo de Choi
+\Fref{fig:cj:purity:ising} compares the three quantities across the $(J/h_x,\,h_z/h_x)$ plane. The mean level spacing ratio is computed for $L=16$ within the even sector (dimension 32,898). As shown in Fig.~\ref{fig:cj:purity:ising}(a), it exhibits a well-defined chaotic dome where $\langle \tilde{r} \rangle \approx 0.53$. Despite the reduced system size, both $\statep$ and $\choip$ reproduce this structure, with low purity correlating with high $\langle \tilde{r} \rangle$. Notably, the Choi echo [Fig.~\ref{fig:cj:purity:ising}(c)] resolves the boundaries of the chaotic region more sharply than the state purity [Fig.~\ref{fig:cj:purity:ising}(b)].
+
+% Comentar sobre la discrepancia (gradiente en las purezas) 
+However, a discrepancy emerges in the regular region $1.5 \le h_z/h_x \le 3$ under weak coupling $J/h_x < 0.5$, indicating that the dynamical probes do not anticorrelate with the spectral statistics across the full parameter space. In this regime, the mean level spacing ratio $\mlsr$ saturates at its Poisson value ($\approx 0.38$), whereas both dynamical probes display a smooth gradient. As $J/h_x$ decreases, the Choi echo and the state purity increase gradually, reaching their maxima only when $J \to 0$. Thus, while spectral statistics detect a uniform regular phase, local probes remain sensitive to the competition between the Ising coupling $J$ and the local fields $(h_x, h_z)$. The Choi echo, in particular, captures the continuous drift toward locally unitary dynamics as interactions become negligible.
+
+% Comentar donde sí el echo de Choi se anticorrelaciona y comparación con trabajo de Wisniacki 
+Finally, in regions where the interaction $J$ is comparable to the local fields, local probes regain a faithful anticorrelation with $\mlsr$, as observed along the parameter cut indicated by the red dashed line in Fig.~\ref{fig:cj:purity:ising} ($J/h_x = 1$). This is precisely the regime analyzed in Ref.~\cite{mirkin_2021_quantum} for $0 < h_z/h_x < 2.5$, where both dynamical and spectral indicators show consistent signatures of chaos.
+
+
+
+% Case 2: Heisenberg
+\subsubsection{Tracking the thermal-to-MBL transition in the Heisenberg model with random fields}
+
+%fig 3, resultados heisenberg{
+\begin{figure}
+\includegraphics[width=\columnwidth]{figures/heisenberg.pdf}
+\caption{Comparison of spectral statistics and local dynamical probes for the Heisenberg model with random fields [\Eref{eq:H:heisenberg}] as a function of disorder strength $h$. All quantities are averaged over 30 disorder realizations. \textbf{Symbols:} Mean level spacing ratio $\langle \tilde{r} \rangle$, computed for $L=18$ within different magnetization sectors $N_{\uparrow}$ (horizontal lines indicate GOE and Poisson limits). \textbf{Solid lines:} Local dynamical probes computed for the spin at the first site ($L=7$), plotted as deviations from unity (impurities): \textbf{Left axis (blue):} averaged subsystem state impurity $1-\statep$ [\Eref{eq:avg:P}] ($N=50$, $T=100$); \textbf{Right axis (brown):} averaged Choi echo deviation $1-\choip$ [\Eref{eq:avg:CJ}] ($T=100$). Shaded bands and error bars indicate the standard deviation.}
+\label{fig:cj:purity:heisenberg}
+\end{figure}
+%}
+
+In the Heisenberg model with random fields, we examine the transition from thermal to the MBL phase. \Fref{fig:cj:purity:heisenberg} displays the spectral and dynamical metrics as a function of disorder strength $h$, with all quantities averaged over 30 disorder realizations. The mean level spacing ratio $\mlsr$ is computed for $L=18$ across five magnetization sectors, specified by the number of up spins $N_{\uparrow} \in \{4, 5, 6, 7, 13\}$, with corresponding Hilbert space dimensions 3,060, 8,568, 18,564, 31,824, and 8,568, respectively. These results, shown as symbols with error bars, capture the crossover from GOE to Poisson statistics around $h_c \approx 3.5$. Here, we observe a robust agreement between the spectral statistics and the local probes. Both the deviation of the Choi echo from unity ($1-\choip$) and the state impurity ($1-\statep$) remain high in the thermal phase ($h \lesssim 1$) and decay as the system transitions to the MBL phase. Significantly, in the deep thermal phase, the Choi echo exhibits negligible variance across disorder realizations (the standard deviation band in Fig.~\ref{fig:cj:purity:heisenberg} is virtually indiscernible), suggesting it is a stable quantifier of the dynamical map's scrambling power. In contrast, the state purity shows larger fluctuations, reflecting its dependence on the specific initial state trajectory.
+
+% Case 3: XXZ
+\subsubsection{Transport-induced false positives for chaos in the XXZ model with a local defect}\label{sec:results_xxz}
+
+Finally, the results for the XXZ model with a local defect reveal a second fundamental limitation of local dynamical probes when contrasted with spectral statistics of the full chain. \Fref{fig:cj:purity:xxz} shows intensity maps of $\mlsr$, $\statep$, and $\choip$ as functions of the anisotropy $J_{xy}/J_z$ and defect strength $\varepsilon/J_z$. The spectral benchmark $\mlsr$ [Fig.~\ref{fig:cj:purity:xxz}(a)] is computed for $L=18$ in the $N_{\uparrow}=7$ sector (dimension 31,824), with the defect placed at site $d=9$. The dynamical probes [Figs.~\ref{fig:cj:purity:xxz}(b,c)] are obtained for $L=7$ with the defect at site $d=3$. In both cases, the defect lies in the bulk but away from the reflection axis, ensuring explicit parity breaking. This placement avoids accidental residual symmetries and makes the intensity maps qualitatively comparable despite the different system sizes.
+
+The most prominent discrepancy appears in the region $J_{xy}/J_z > 1$ with a vanishing defect $\varepsilon \to 0$. Here the model approaches the clean XXZ chain and is integrable, a fact captured by $\mlsr$, which saturates at the Poisson value. In sharp contrast, both dynamical probes yield low values that are indistinguishable from the chaotic regime. This constitutes a spurious signature of GOE statistics: strong interactions lead to fast local relaxation of the probe, overwhelming the global integrable structure and producing a false positive for chaos.
+
+A second, more subtle discrepancy mirrors the behavior observed in the mixed-field Ising model. For $J_{xy}/J_z \lesssim 1$, the spectral indicator $\mlsr$ exhibits a sharp transition toward regular behavior as $J_{xy}$ decreases. The dynamical probes, however, respond through a smooth gradient: as $J_{xy} \to 0$, the flip-flop term responsible for spin transport vanishes and the probe dynamics crosses over continuously to an Ising-type dephasing channel. Thus, while spectral statistics detect the abrupt breakdown of GOE correlations, the local probes remain sensitive to the gradual suppression of transport rather than the transition to the integrable limit.
+
+
+%fig 4, resultados xxz{
+\begin{figure*}
+\includegraphics[width=\textwidth]{figures/xxz.pdf}
+%
+\caption{Comparison of spectral statistics and local dynamical probes for the XXZ model with a local defect [\Eref{eq:H:xxz}] as a function of $J_{xy}/J_z$ and $\varepsilon/J_z$. \textbf{(a)} Mean level spacing ratio $\langle \tilde{r} \rangle$, computed for $L=18$ ($N_{\uparrow}=7$) with the defect at site $d=9$. \textbf{(b)}, \textbf{(c)} Local dynamical probes computed for the spin at the first site ($L=7$) with the defect at site $d=3$: \textbf{(b)} averaged subsystem state purity $\statep$ [\Eref{eq:avg:P}] ($N=50$, $T=100$); \textbf{(c)} averaged Choi echo $\choip$ [\Eref{eq:avg:CJ}] ($T=100$). In both configurations, the defect placement explicitly breaks spatial reflection symmetry.}
+\label{fig:cj:purity:xxz}
+\end{figure*}
+%}
+
+%\subsection{Discussion}% Old discussion
+%Collectively, these results clarify the distinction between \textit{local
+%decoherence} and \textit{quantum chaos}. While chaotic systems generally induce
+%rapid decay of the Choi echo (irreversibility), the converse is not always true. 
+%High decoherence can arise in integrable systems due to strong local 
+%interactions or coherent transport (as seen in the XXZ model with a local 
+%defect). The Choi echo, by probing the reversibility of the channel, confirms 
+%that local probes are sensitive to the \textit{mechanism} of information 
+%loss—whether via quantum chaotic dynamics or transport—whereas spectral statistics are sensitive to the correlations of the spectrum. Therefore, although the Choi echo is a powerful characterizer of local open dynamics, it (and by extension, the state purity) can at best serve as a proxy for many-body quantum chaos but only within specific classes of models.
+%
+%This operational framework offers a physical explanation for the most
+%striking discrepancy noted in \Sref{sec:results_xxz}: the low purity
+%signals found in the integrable regime of the XXZ model. In a strongly
+%interacting chaotic system, the forward evolution $U(t)$ rapidly
+%generates entanglement, spreading local information into non-local
+%quantum correlations between $S$ and $E$. The operation $\Lambda_S$
+%destroys the system's share of these correlations. Because the global
+%information required to reverse the dynamics is no longer intact \mgnote{meaning, it is erased by the channel evolution? is this why Markovian evolution creates always monotone decreasing functions?}, the
+%backward evolution $U^\dagger$ fails to recover the initial state.\\
+%This irreversibility manifests as a low echo (low purity). However, this same mechanism applies to integrable systems that support transport, such as the XXZ model with $J_{xy} \neq 0$. Even without quantum chaos,
+%the probe spin entangles with the environment through the transport of
+%spin excitations. The local erasure $\Lambda_S$ breaks these correlations
+%just as effectively, degrading the echo and lowering the purity \cite{betheanzatsmagic2025}. 
+%Consequently, the probe essentially measures the capacity for
+%entanglement generation and information propagation, yielding a signal
+%indistinguishable from chaos despite the underlying integrability of
+%the system.
+%
+%
+%% Resaltar el "falso positivo" y  
+%% dar la explicación física (transporte vs. caos).
+%The most striking discrepancy is the emergence of a ``false positive''
+%for chaos. In the XXZ model with a local defect
+%[\Fref{fig:cj:purity:xxz}], both local probes register maximal
+%decoherence (minimal purity), a signature ubiquitously associated
+%with chaos, \cdnote*{SUG: conforme a lo que menciona Miguel, yo creo que si nos aproximamos mucho a las fases integrables, lo malo, que no mencionamos nada de sus caracteristicas, por ejemplo en los papers de Lea si hablan del XXZ y su transiciones de coas e integrabilidad, si hablan de sus fases integrables, pero solo eso, mencionan que es beth ansazt (referencia) cuando el defecto es =0, cuando el defecto aumenta mucho, entonces son dos cadenas XXZ independientes e integrables por beth ansazt. Yo creo que si deberíamos mencionar con referencias, no inadagar en las fases integrables, solo mencionar que existen y que nuestros parámetros los ocupan}{\color{blue}within a parameter regime that $\mlsr$ confirms is
+%robustly integrable (Poissonian statistics).} \mgnote{We are not reporting here any integrable model, all the models here are strictly non-integrable.} We argue in \Sref{sec:le_interpretation} that this failure occurs because
+%single-spin probes measure local dynamical irreversibility---a
+%quantity analogous to the Loschmidt echo~\cite{gorin_2006_dynamics, goussev_2012_loschmidt}. This
+%irreversibility can be generated by two distinct mechanisms:
+%genuine many-body chaos, or entanglement generation via coherent
+%integrable transport. Since the single-spin probes cannot
+%distinguish between these two mechanisms, they fail as universal
+%proxies for chaos.
+%\mgnote{This could also be in the abstract, but with a different approach. we need to work the wording. This is the main result of all our research in my opinion, in addition to the introduction of Choi as a better local measure than the chaometer. I like this.}
+%
+%In summary, this operational perspective establishes that the CJ
+%purity measures the irreversibility of the dynamics under local erasure \mgnote{why is this local erasure, is this because the bipartition chosen between the system-environment, first spin vs the rest?},
+%serving effectively as a gauge for system-environment entanglement
+%generation \mgnote{and erasure of some SE information}. Consequently, it serves as a faithful indicator of
+%quantum chaos if and only if the generation of such entanglement is
+%attributable exclusively to the chaotic nature of the total system,
+%as is the case in the Heisenberg model with random fields.
+%Our results, however, highlight that this condition is not universally
+%met; integrable dynamics with active transport can generate sufficient
+%entanglement to signal high irreversibility, thereby mimicking one of
+%the signatures of chaos \mgnote{For dynamical probes of quantum chaos, \cite{betheanzatsmagic2025}. Page values (by Papic, Bianchi Donna et al.) as far as I'm aware, are not easily falsifiable but they are not local either, at least, half the system bipartition.}.
+%
+%As detailed in
+%\Sref{sec:choi_purity}, $\overline{\mathcal{P}}$ \cdnote*{esto ya lo dejaría pa conclusiones}{\color{blue}cannot distinguish,
+%for instance, between energy dissipation and simple local unitary
+%evolution. A more fundamental test of the} local-probe of quantum chaos hypothesis would require characterizing the full dynamical map, or quantum channel $\mcE_t$, that governs the probe's reduced dynamics~\cite{nielsen_2010_quantum, watrous_2018_theory}.
+%As illustrated in \Fref{fig:cj:purity}, the qualitative nature of this
+%channel---visualized by its action on the Bloch sphere---is
+%dramatically different in regular [Fig.~\ref{fig:cj:purity}(a2)]
+%versus chaotic [Fig.~\ref{fig:cj:purity}(b2)] regimes. In
+%this work, we introduce a metric to quantify this distinction: the
+%averaged Choi (CJ) purity,
+%$\expval{\Tr[\mcD(t)^2]}_{\text{Haar}, t}$. This metric
+%quantifies the intrinsic properties of the channel itself, averaged
+%over time and the environment~\cite{jamiolkowski_1972_linear, choi_1975_completely}. If the local-global correspondence
+%holds, this more rigorous local probe should track $\mlsr$ even
+%more faithfully than $\statep$.
+%
+%Our results demonstrate a clear breakdown of the assumed
+%local-global correspondence\mgnote{We should rephrase this, or cite Wisniacki, but that would imply that he is explicitly saying the so called local-global correspondence.} . We find, surprisingly, that neither
+%single-spin dynamical probe ($\statep$ or $\choip$) serves as a
+%universal proxy for many-body quantum chaos \mgnote{need reiteration here.}.
+
+\subsection{Discussion}\label{sec:discussion}
+The comparison across the three models yields a coherent picture of the diagnostic capabilities and limitations of local dynamical probes. The Choi echo quantifies the recoverability of global correlations after information on the probe is locally erased. Its magnitude reflects how effectively the environment can rebuild the correlations required for reversibility, rather than the spectral complexity encoded in the correlations of the spectrum.
+
+In the Heisenberg model with random fields this recoverability is intrinsically suppressed. Chaotic evolution rapidly distributes information across the system and environment, and the depolarization on the probe removes the correlations needed to reconstruct the global state. As a result, both the Choi echo and the state purity track the integrability-to-chaos crossover with high fidelity, aligning with the behavior of short-range correlations of the spectrum.
+
+However, the XXZ chain with a local defect exposes a key limitation: strong local relaxation does not uniquely signal spectral chaos. In this model, ballistic or diffusive transport generates rapid entanglement between the probe and the rest of the chain even in parameter regimes where the many-body spectrum remains integrable. From the standpoint of the Choi echo, these transport-driven processes are operationally indistinguishable from genuine scrambling—both mechanisms disperse correlations across the system, preventing their local reconstruction. Consequently, local probes fundamentally diagnose the strength of dynamical coupling and the efficiency of information propagation, rather than the presence of correlations in the spectrum.
+
+The mixed-field Ising model highlights a complementary advantage of the Choi echo. Because it characterizes the unitarity of the reduced dynamics instead of the mixedness of particular trajectories, it resolves the approach to the decoupled limit more sharply than state-based metrics. This distinction underscores the conceptual separation between probes of dynamical reversibility and probes of state purity: while both reflect aspects of equilibration, only the former directly quantify the intrinsic stability of the reduced dynamics under local perturbations.
+
+From a technical standpoint, the Choi echo offers a more intrinsic diagnostic of reduced dynamics than the subsystem state purity. The analytical relationship established in Eq.~\eqref{eq:purity_relation} clarifies why state purity can remain high in non-unitary regimes, whereas the echo directly quantifies deviations from unitarity. This distinction proved essential in the mixed-field Ising model, where the echo resolved the approach to the decoupled limit with significantly higher fidelity.
+
+% Paragraph 3: The main physical limitation (False Positives & Generalization).
+Crucially, however, our results challenge the universality of the ``local decoherence--spectral chaos in the entire system correspondence'' between subsystem dynamics and spectral statistics. While chaotic dynamics (as in the random-field Heisenberg model) reliably induce high decoherence, we demonstrate that the converse does not hold. The emergence of ``false positives'' in the XXZ model with a local defect, specifically within a parameter regime exhibiting Poissonian statistics, shows that single-spin probes cannot distinguish between genuine scrambling induced by many-body chaos and entanglement generation driven by coherent transport. In both regimes, the mechanism of information loss---from the perspective of the local subsystem---is operationally identical: the environment acts as an effective sink for correlations, rendering the local dynamics irreversible despite the underlying integrability of the global spectrum. We anticipate that such false positives are not unique to the XXZ chain but will arise generically in integrable systems perturbed by local defects~\cite{santos_2020_speck}, where the conserved quantities of the integrable limit are nonlocal and are all broken by the presence of a single-site defect, as well as in integrable systems where the entangling power can mimic the effect of quantum many-body chaos~\cite{betheanzatsmagic2025}.
+
+The combined analysis across the mixed-field Ising, random-field Heisenberg, and defected XXZ models demonstrates both the strengths and the boundaries of local dynamical indicators. While the echo reliably tracks the chaotic transition in regimes where spectral complexity and dynamical irreversibility coincide, it also reveals scenarios in which rapid local relaxation arises from mechanisms unrelated to many-body chaos. In particular, coherent transport in integrable models can mimic the relaxation patterns typically associated with scrambling, underscoring that local probes fundamentally quantify the efficacy of information propagation rather than the fine structure of the spectrum.
+%}
+%
+% (dead)Results{
+%\section{Results}\label{sec:results}
+
+%\mgnote{I was supposed to work in this section because the comments have been done already, but you have repeated this section in the previous one. But in this section, there are still more details than the previous section does not have.}
+
+%We now present numerical results examining the averaged
+%CJ purity, $\choip$, as a dynamical probe
+%of quantum chaos 
+%We now present numerical results examining the averaged Choi purity, 
+%$\choip$, as a dynamical local probe of quantum chaos.
+%We benchmark this quantity against the and the averaged
+%mean level spacing ratio $\expval{\tilde{r}}$
+%subsystem state purity $\statep$ across the parameter spaces of
+%the three spin chain models introduced in~\Sref{sec:spin_chains}.
+%Both purities are computed for the spin at the first site.
+
+%While $\choip$ often anticorrelates with the
+%spectral indicator $\expval{\tilde{r}}$, particularly in robust
+%chaotic regimes, our results demonstrate that both single-spin
+%dynamical probes, $\choip$ and $\statep$, can yield signatures
+%inconsistent with the spectral benchmark.
+% \mgnote{a discussion about the dimensionality is needed in my opinion. what if we had computed Choi's purity at the same L=16? In the Ising model i would expect even better results, better than gap-ratios? yes, due to the fact that entanglement entropy is better at characterizing quantum chaos as i showed you before in \cite{microcanonical2024}}\janote{Estoy de acuerdo. Hay que pensar bien cómo discutir esto para que el argumento también justifique porqué no mostramos un analísis en el que escalamos la dimensión del sistema. Por ahora, esto es lo que yo tengo para decir: Conforme el número de espines crece el entorno el canal se vuelve un ``mejor'' canal depolarizante en el regimen caótico}
+
+% Before presenting the model-specific results, we outline the
+% common numerical setup for the dynamical probes. The subsystem
+% purity $\statep$, defined in \Eref{eq:avg:P}, is computed
+% via a double average: over $N=50$ distinct random product
+% initial states and over a time $T=100$. The Choi purity
+% $\choip$ is similarly time-averaged over $T=100$, where its
+% value at each time $t$ is determined by evaluating the
+% analytical Haar-averaged formula in \Eref{eq:haar:avg:choi}.
+% This evaluation involves a sum over $4^{L-1}$ terms and
+% scales as $4^L$. Due to this significant computational
+% cost, 
+% $\choip$ is computed for chains of length $L=7$.
+% We compute $\statep$ for the same length, $L=7$, to ensure a
+% direct comparison. In contrast, the
+% mean level spacing ratio $\expval{\tilde{r}}$ is computed via
+% exact diagonalization for larger systems to ensure robust
+% statistics. The specific system sizes for each model are
+% provided in the following.
+
+%ising{
+%We begin with the mixed-field Ising model, see \Eref{eq:H:ising}.
+%Each panel in \Fref{fig:cj:purity:ising} shows intensity plots for
+%$\mlsr$, $\statep$, and $\choip$, respectively,
+%as a function of $J/h_x$ and $h_z / h_x$.
+%In \Fref{fig:cj:purity:ising}(a), $\expval{\tilde{r}}$ is computed
+%for $L=16$ in the even symmetric sector, dimension 32,898.
+%The chaotic region, $\expval{\tilde{r}} \approx 0.53$ (GOE), and
+%surrounding regular regions, $\expval{\tilde{r}} \approx 0.38$
+%(Poisson), are clearly delineated. The $\ev{\tilde{r}}$ map for
+%the odd sector, not shown, is qualitatively similar.
+%Notably, despite the dynamical probes being computed for a
+%system size ($L=7$) less than half that of the spectral
+%benchmark ($L=16$), both identify the main chaotic region,
+%anticorrelating with $\expval{\tilde{r}}$. Specifically, the
+%chaotic regime corresponds to the maximum of $\expval{\tilde{r}}$
+%but the minimum of the dynamical purities. Furthermore, the map for
+%$\choip$ in panel (c) resolves the ``tails'' of the
+%chaotic region evident in panel (a) more distinctly than
+%that of $\statep$ in panel (b).
+%
+%Nonetheless, a significant discrepancy arises in the dynamical
+%probe maps within an integrable region, compared to $\mlsr$.
+%In the region delimited by
+%$1 \leq h_z/h_x \leq 3$ and $0 \leq J/h_x \leq 0.5$,
+%$\expval{\tilde{r}}$ signals regular behavior,
+%attaining its Poisson value, $\expval{\tilde r} \approx 0.38$.
+%In contrast, both dynamical purities increase as $J/h_x$ decreases
+%and $h_z/h_x$ increases. That is, in this parameter region, the
+%dynamical probes do not anticorrelate with the mean level spacing
+%ratio. This behavior arises because as $J/h_x \to 0$, the
+%non-interacting field terms of the Hamiltonian
+%dominate over the Ising interaction term. The probe spin
+%effectively decouples from the environment and its dynamics,
+%governed primarily by its local fields, become almost unitary. \mgnote{this is the main reason of the difficulty in studying that regime, the decoupling, let's do the (hz,hx) map to see if it agrees with \cite{microcanonical2024}.}
+%\janote{Me opongo. Hago la contrapropuesta de añadirlo como trabajo futuro en las conclusiones}
+%Hence, $\statep$ and $\choip$ transition toward high purity.
+%This transition toward high purity is more distinct for \cdnote*{SUG: Será que marcamos con lineas verticales u horizontales rojas en la figura 2   donde se está analizando esto?}{\blue $\choip$
+%than for $\statep$.
+%In Ref.~\cite{mirkin_2021_quantum}, $\statep$ was investigated for
+%the horizontal line $J/h_x = 1$, where it does
+%}\janote{me parece bien}
+%anticorrelate with $\mlsr$; thus, this discrepancy did not become apparent. 
+%}
+
+%heisenberg{
+%Next, we examine the Heisenberg model with random fields,
+%\Eref{eq:H:heisenberg}, a paradigmatic system for
+%studying the many-body localization (MBL) transition.
+%In \Fref{fig:cj:purity:heisenberg}, all three indicators
+%are shown as a function of the disorder strength $h$. 
+%All three indicators,
+%$\mlsr$, $\statep$, and $\choip$, are averaged
+%over 30 disorder realizations. The mean level spacing 
+%ratio $\expval{\tilde{r}}$ is calculated for $L=18$ within five
+%$M_z$ conservation sectors, shown as symbols with error bars, 
+%specified by the number of up spins ($N_{\uparrow}$): 
+%$N_{\uparrow} = 4, 5, 6, 7$, and $13$.
+%The $N_{\uparrow}=7$ sector is the largest.
+%The horizontal lines indicate the
+%GOE (chaotic) and Poisson (integrable) values for $\expval{\tilde{r}}$. 
+%To facilitate comparison, we plot the ``impurities'',
+%$1 - \statep$ (blue, left axis) and $1 - \choip$
+%(brown, right axis), as solid curves with shaded bands.
+%Their high values correspond to
+%chaos for all three metrics.
+%
+%In this model, a clear correlation with the impurities---and
+%consequent anticorrelation with the purities---is
+%observed between the spectral and dynamical indicators across the
+%entire parameter range. All three metrics capture the
+%transition from a chaotic phase at weak disorder, $h \lesssim 1$,
+%to an integrable many-body localized phase at strong
+%disorder, $h \gtrsim 3.5$.
+%% {\color{red}\sout{
+%% In the chaotic regime, $0 \leq h \leq 1$, the standard
+%% deviation band for $1 - \choip$ is negligible, indicating a stable,
+%% \cdnote*{SUG: quita eso}{\blue self-averaging} quantity}}
+%In the chaotic regime ($0 \leq h \leq 1$), $1 - \choip$ exhibits minimal 
+%fluctuation (negligible standard deviation), indicating the quantity stabilizes 
+%when the system is chaotic. 
+%% \mgnote{careful with the wording, self-averaging is only visible when one increases the system size \cite{leaselfaveraging1}}\janote{Listo}. 
+%In contrast, the band for $1 - \statep$ is significantly wider, showing greater
+%sensitivity to the specific disorder realization.
+%}
+
+%xxz{
+%Finally, we analyze the XXZ model with a local defect, see
+%\Eref{eq:H:xxz}. Each panel in \Fref{fig:cj:purity:xxz} shows
+%intensity plots for $\mlsr$, $\statep$, and $\choip$, respectively,
+%as a function of $J_{xy} / J_z$ and $\varepsilon / J_z$.
+%In \Fref{fig:cj:purity:xxz}(a), $\expval{\tilde{r}}$ is computed
+%for $L=18$ in the $N_{\uparrow}=7$ magnetization sector, with the
+%defect placed at site $d=9$.
+%In Figs.~\ref{fig:cj:purity:xxz}(b) and \ref{fig:cj:purity:xxz}(c),
+%we show $\statep$ and $\choip$, respectively, computed for $L=7$
+%with the defect placed at site $d=3$.
+%In both configurations, the defect is placed within the bulk of the
+%chain but away from the axis of spatial reflection symmetry.
+%Specifically, choosing $d=3$ for $L=7$ and $d=9$ for $L=18$
+%ensures that parity symmetry is explicitly broken. This guarantees
+%that the defect acts as a generic scatterer of spin excitations 
+%without preserving residual discrete symmetries, thereby rendering the 
+%intensity plots in \Fref{fig:cj:purity:xxz} qualitatively comparable across the
+%different system sizes.
+%On one hand, for $J_{xy}/J_z > 1$, as $\varepsilon/J_z \to 0$, the
+%mean level spacing ratio transitions to the Poisson value (purple
+%color in the map), yet neither $\statep$ nor $\choip$ is observed
+%to transition to its maximum value. On the other hand, in the
+%parameter region $J_{xy} / J_z < 1$ where $\mlsr$ has already
+%attained the Poisson value ($\approx 0.38$), the dynamical purities
+%exhibit varying values as $J_{xy} / J_z \to 0$. They reach their
+%maximum values only at $J_{xy} / J_z \approx 0.1$. This mismatch
+%further indicates the absence of a direct anticorrelation in the
+%transition from Poisson to GOE statistics.
+%
+%Let us discuss the discrepancies observed in \Fref{fig:cj:purity:xxz}
+%in more detail. First, consider the region defined by
+%$J_{xy}/J_z > 1$ and $\varepsilon/J_z \to 0$. This region presents
+%a deviation from the direct correspondence between
+%maximal single-spin decoherence and GOE statistics observed in the
+%mixed-field Ising and the Heisenberg with random fields models. While
+%$\expval{\tilde{r}}$ [\Fref{fig:cj:purity:xxz}(a)] identifies this
+%region as having Poisson statistics, both dynamical probes, $\statep$
+%and $\choip$, characterize it with low purity values,
+%indistinguishable from the regions where the probes anticorrelate with
+%GOE spectral statistics. Consequently, these results suggest that
+%single-spin probes might yield false positives for GOE statistics.
+%However, this interpretation requires caution regarding finite-size
+%effects. We note that in the mean level spacing ratio maps for other
+%symmetry sectors (not shown), the chaotic region widens toward
+%$\varepsilon/J_z \to 0$ as the sector dimension increases,
+%either by increasing the system size $L$ or by selecting larger
+%symmetry sectors for a fixed $L$. This dependence on the symmetry
+%sector dimension is analogous to the behavior observed in the
+%Heisenberg model (\Fref{fig:cj:purity:heisenberg}), where the extent
+%of the chaotic regime indicated by spectral statistics varies
+%with the sector size (e.g., comparing $N_{\uparrow}=4$ and $N_{\uparrow}=7$).
+%Nevertheless, it remains for future work to determine if the observed
+%spectral integrability is a transient finite-size effect. Strictly
+%within our numerical window, however, low dynamical purity does not
+%uniquely identify quantum chaos.
+%
+%Second, a distinct discrepancy emerges in the parameter region
+%defined by $J_{xy}/J_z \lesssim 2$. Here, the mean level spacing
+%ratio [\Fref{fig:cj:purity:xxz}(a)] delineates a progression from
+%the GOE statistics regime (yellow) through an intermediate transition
+%zone (green) to a clearly defined region with Poisson statistics (purple) as
+%$J_{xy}/J_z$ decreases. In contrast, the dynamical probes in
+%Figs.~\ref{fig:cj:purity:xxz}~(b) and \ref{fig:cj:purity:xxz}~(c) do not
+%faithfully track these boundaries. Instead, they exhibit a continuous,
+%smooth gradient towards higher purity values as $J_{xy}/J_z \to 0$.
+%Crucially, within the parameter region where $\expval{\tilde{r}}$ has
+%already saturated at the Poisson value, indicating regular behavior, the
+%dynamical purities continue to vary significantly. This behavior arises
+%because, as $J_{xy} \to 0$, the interaction term responsible for
+%the transport of spin excitations vanishes, and the remaining
+%Ising interaction inducing dephasing becomes dominant.
+%The quantum channel of the probe thus transitions gradually---not
+%abruptly---becoming increasingly dominated by dephasing effects as
+%the spin-flipping contribution fades. This results in a gradual
+%increase in purity that does not strictly anticorrelate with the
+%sharper spectral transition to regular behavior.
+%}
+
+%Collectively, the results across the mixed-field Ising, Heisenberg with
+%random fields, and XXZ with a local defect models distinguish the roles of
+%the \textit{degree of decoherence} of the probe spin and the underlying
+%many-body quantum chaos. While a high degree of decoherence (low purity)
+%often accompanies chaotic spectral statistics, our analysis reveals that
+%this correspondence is not universal. The observed discrepancies---ranging
+%from high decoherence in the integrable regime of the XXZ model to
+%suppressed decoherence in the decoupling limits---demonstrate that the
+%degree of decoherence is primarily a measure of the local dynamical
+%coupling and information exchange with the environment. This local
+%behavior depends explicitly on kinetic interaction details (such as
+%spin-flipping terms) and can diverge from the global correlations of
+%the many-body energy spectrum quantified by $\expval{\tilde{r}}$.
+%Consequently, the degree of single-spin decoherence should not be
+%interpreted as a strictly interchangeable proxy for many-body quantum chaos.
+%}
+%
+% VIII. Conclusios and Outlook{
+\section{Conclusions}\label{sec:conclusions}
+% Paragraph 1: Summary of the theoretical framework.
+We have discussed Choi-state purity as a physically motivated dynamical metric for characterizing reduced quantum evolution. 
+By reformulating this quantity as the \textit{Choi echo}, we made explicit that the diagnostic operates directly at the level of the dynamical map, independent of the behavior of particular input states—a distinction reflected in its analytical relation to the Haar-averaged state purity. 
+This channel-based formulation shows that the unitarity of the reduced dynamics is governed by the extent to which the global evolution remains reversible once local information has been erased, thereby identifying reversibility as an intrinsic property of the map itself.
+
+% Paragraph 2: Technical superiority over state purity.
+Our comparative analysis reveals that the Choi echo provides a more fundamental characterization of reduced dynamics than the subsystem state purity. We derived an analytical relationship [Eq.~\eqref{eq:purity_relation}] demonstrating that state purity is intertwined with the channel's unitality. This theoretical insight explains our numerical findings in the mixed-field Ising model, where the Choi echo resolved the transition to the decoupling limit with significantly higher definition than state-based metrics. Consequently, for distinguishing between decoherence-free unitary evolution and genuine information loss, the Choi echo constitutes a superior diagnostic.
+
+Our analysis shows that the degree of local decoherence is primarily a signature of the \textit{strength of dynamical coupling} and the efficiency of information propagation, rather than a unique fingerprint of quantum chaos. While the Choi echo constitutes a rigorous metric for quantifying dynamical irreversibility---a property central to the study of thermalization and information scrambling---its use as a proxy for spectral chaos requires careful contextualization in terms of the system's transport properties. Future work may address whether channel-based metrics involving multi-point correlations can bridge the gap between dynamical irreversibility and the fine-grained spectral complexity of quantum chaos.
+We have thus established that the Choi echo is a rigorous and versatile probe of dynamical irreversibility in composite quantum systems. These findings motivate the exploration of channel-based probes involving multi-spin partitions or temporal correlation structures, which may bridge the gap between local irreversibility and spectral diagnostics of quantum chaos.
+
+%Done
+%\begin{itemize}
+    %\item Estamos presentando una nueva interpretación operacional de una cantidad y que nos permitió entender porqué un local probe, DE UN SPIN (probe of two spins may detect correlations beyond one spin), a lo más es un proxy de caos cuántico.
+    %\item La pureza de Choi tiene la forma de una fidelidad de echo, midiendo la reversibilidad del entorno ante perturbaciones del sistema que rompen las correlaciones cuánticas. 
+    %\item La pureza de Choi describe el efecto que el ambiente tendrá sobre el sistema.
+    %\item El echo de Choi como local probe of quantum chaos tiene la limitación de la interacción entre el sistema y el entorno.
+    %\item Los falsos positivos van a ocurrir en todos los modelos a los que se le rompe la integrabilidad con un defecto, cuando la las cantidades conservadas son no locales (Lea speck of chaos).
+%\end{itemize}
+%}
+%
+% Acknowledgments{
+\section*{Acknowledgments}
+We acknowledge discussions with V. H. T. Brauer at early stages of this project, and valuable feedback from D. Wisniacki, C. Pineda, J. G. Hirsch, F. de Melo and B. Dietz.
+All authors acknowledge SECIHTI through funding for graduate studies.
+J.A.d.L. acknowledges support by UNAM-PAPIIT IG101324 and SECIHTI CBF-2025-I-1548. M.G. acknowledges the financial support from the Institute for Basic Science (IBS) in the Republic of Korea through the Project No. IBS-R024-D1. We acknowledge the support of the Computation Center-ICN, in particular to Enrique Palacios, Luciano Díaz and Eduardo Murrieta.
+%}
+
+%\clearpage
+%\newpage
+%\input{old_sections/directionality.tex}
+%\clearpage
+%\newpage
+
+% Appendices{{
+\appendix
+% \input{app/complementariedad.tex}
+\input{app/haar.tex}
+
+%\section{The Choi echo: an operational interpretation}\label{sec:le_interpretation}
+%\janote{Esta sección es la viejo. La dejo por ahora para referencia}
+%To make this analogy explicit, let us consider the Choi purity
+%for a channel $\mcE_t$ generated from a single, pure environment
+%state $\rho_E = \dyad{\psi}$. Using the definition in
+%\Eref{eq:choi_def}, the purity of the corresponding CJ
+%matrix $\mcD(t)$ can be written as
+%\begin{equation}
+%\Tr[\mcD(t)^2] =
+%\frac{1}{d_S^2} \sum_{k,l=1}^{d_S}
+%\Tr\left[ \mcE_t(\dyad{k}{l}) \mcE_t(\dyad{l}{k}) \right],
+%\end{equation}
+%where $\{\ket{k}\}$ denotes an orthonormal basis for the system $S$.
+%By substituting the system-environment representation of the channel
+%[Eq.~(\ref{eq:channel_def})] and rearranging the trace operations,
+%this expression takes a form analogous to an echo fidelity:
+%\begin{equation}\label{eq:choi_as_le}
+%\Tr[\mcD(t)^2] = \Bigg\langle\psi\Bigg|
+%\Tr_S\Bigg[
+%U^\dagger \Lambda_S \bqty{
+%U \pqty{\frac{\mathbb{I}_S}{d_S} \otimes \dyad{\psi} } U^\dagger
+%} U
+%\Bigg]
+%\Bigg|\psi\Bigg\rangle,
+%\end{equation}
+%where $d_S=2$ for our single-spin probe. 
+%\janote{This works for all U and all dimensions of the system}
+%Here, we have suppressed the
+%explicit time argument in the evolution operators, $U \equiv U(t)$, for
+%compactness. $\Lambda_S$ represents a completely depolarizing channel \mgnote{it's not completely obvious to me that is the depolarizing channel}
+%\janote{No lo escribí pensando que importe entender aquí cómo sale 
+%el canal depolarizante. Les parece realmente importante? Tal vez lo puedo
+%lograr con uno o dos enunciados extras}
+%acting \textit{locally} on the system $S$ intermediate to the forward
+%and backward evolutions.
+%
+%Equation~\eqref{eq:choi_as_le} reveals an operational structure
+%reminiscent of a Loschmidt echo protocol, specifically testing the
+%reversibility of the environment's state against local information
+%erasure. The Choi purity can be interpreted as the probability of the
+%environment returning to its initial state after the sequence:
+%(i) the joint system $S+E$ evolves forward via $U(t)$ starting from
+%a product state where the system $S$ carries minimum information,
+%$\rho_{SE} = (\mathbb{I}_S/d_S \otimes \dyad{\psi})$;
+%(ii) a local ``perturbation'' is applied via the completely depolarizing channel
+%$\Lambda_S$, which effectively resets $S$ to the maximally mixed state,
+%erasing any quantum correlations between $S$ and $E$ acquired during evolution; 
+%and (iii) the joint system evolves backward via $U^\dagger(t)$. \mgnote{If correct, we should stress more this interpretation, for the first time i can clearly see now (can this be explained with the unitarity? which you also said can't be captured with the system's purity?) that the entanglement entropy from the state is different than the entanglement Choi's state.}\janote{De acuerdo. Le podemos dedicar un párrafo más a seguir hablando de esta interpretación, posiblemente incluyendo uno o dos ejemplos interpretados desde este punto de vista}
+%
+%\mgnote{Needs rewriting.}
+%Instead, as elucidated by the operational interpretation in \Sref{sec:le_interpretation}, they function as measures of local dynamical irreversibility under information erasure, analogous to a Loschmidt echo. This irreversibility, manifested as low purity, can be induced by two physically distinct mechanisms: (i) genuine many-body quantum chaos, which thermalizes the subsystem, or (ii) the generation of system-environment entanglement via coherent transport of spin excitations, which can occur in an integrable system. The inability of single-spin probes to distinguish between these two sources of decoherence is the primary reason for their failure as universal quantum many-body chaos indicator. \mgnote{It is left in the future, what are the conditions needed to improve it as such.}
+%
+%Figs.~\ref{fig:cj:purity}(a2) and \ref{fig:cj:purity}(b2) present the dynamical
+%signatures differentiating two sets of parameters in the mixed-field 
+%Ising model,
+%corresponding to regular and chaotic regimes. These regimes are
+%characterized by the mean level spacing ratio $\expval{\tilde{r}}$
+%in Figs.~\ref{fig:cj:purity}(a1) and \ref{fig:cj:purity}(b1).
+%This Bloch sphere dynamics is the effect of the quantum channel
+%$\mcE_t$. For these two sets of parameters, the different regimes
+%manifest directly in the reduced dynamics of the probe spin. In
+%the regular regime, Fig.~\ref{fig:cj:purity}(a2) shows a
+%quasi-coherent evolution; the accessible volume on the Bloch
+%sphere remains large, undergoing complex precession with little
+%deformation. In stark contrast, the chaotic regime
+%[Fig.~\ref{fig:cj:purity}(b2)] induces rapid decoherence, causing
+%the Bloch sphere to quickly contract towards a small ellipsoid
+%revolving around the origin.
+%}}
+
+% Bibliography{{
+% \bibliographystyle{unsrt}
+\bibliography{bibliography/MODIFICAR_ESTE.bib,bibliography/NO_MODIFICAR.bib}
+%}}
+
+
+\end{document}
