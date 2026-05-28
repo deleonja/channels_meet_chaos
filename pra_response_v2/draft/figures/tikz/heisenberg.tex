@@ -1,0 +1,43 @@
+\documentclass[border={-3 4 -4 -4}]{standalone}
+
+\usepackage{graphicx}
+\graphicspath{../}
+\usepackage{tikz}
+
+
+\tikzset{
+  mylabels/.style={
+    font=\fontsize{8}{10}\selectfont
+  }
+}
+
+\begin{document} 			
+\begin{tikzpicture}
+\begin{scope}[anchor=north west]
+\node[anchor=north west] (g) at (0, 0) {\includegraphics[width=0.65\textwidth]{../heisenberg.pdf}};
+
+\node () at (g.south) [anchor=north, inner sep=-15pt] {\large $h$};
+
+%\node[anchor=north west] (g) at (0.9, -1.7) {\includegraphics[width=0.4cm]{../legend_fig3.pdf}};
+\node[anchor=north west, fill=white, inner sep=5pt] (g) at (0.9, -1.7) {\includegraphics[width=0.4cm]{../legend_fig3.pdf}};
+
+\node(label1)[mylabels] at (1.4,-3.005) {$13$ $\uparrow$};
+\node(label2)[mylabels] at ([xshift=0pt,yshift=-5pt]label1.north) [anchor=south] {$7$ $\uparrow$};
+\node(label3)[mylabels] at ([xshift=0pt,yshift=-1.5pt]label2.north) [anchor=south, inner ysep=0pt] {$6$ $\uparrow$};
+\node(label4)[mylabels] at ([xshift=0pt,yshift=1.5pt]label3.north) [anchor=south, inner ysep=0pt] {$5$ $\uparrow$};
+\node(label5)[mylabels] at ([xshift=0pt,yshift=2.3pt]label4.north) [anchor=south, inner ysep=0pt] {$4$ $\uparrow$};
+\node()[mylabels] at ([xshift=-8pt,yshift=2pt]label5.north) [anchor=south, inner ysep=0pt] {$\langle\tilde r\rangle$};
+
+\node(labelgoe)[mylabels] at (4.3, -0.42) 
+  {$\langle\tilde{r}\rangle_\mathrm{GOE}$};
+\node()[mylabels] at ([xshift=12pt,yshift=0pt]labelgoe.east) 
+  [anchor=west, inner sep=0pt] {$\langle\tilde{r}\rangle_\mathrm{Poisson}$};
+\node(labelChoi)[mylabels] at ([xshift=-17pt,yshift=3.21pt]labelgoe.south) 
+  [anchor=north west] 
+  {$1 - \langle\mathrm{Tr}[\mathcal{D}(t)^2]\rangle_{\mathrm{Haar},T}$};
+\node(labelP)[mylabels] at ([xshift=-29pt,yshift=4.9pt]labelChoi.south) 
+  [anchor=north] 
+  {$1- \overline{\mathcal{P}}$};
+\end{scope}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,114 @@
+\documentclass[border=10pt]{standalone}
+
+\usepackage{physics}
+
+\usepackage{graphicx}
+\graphicspath{
+  {/home/jadeleon/Documents/chaos_meets_channels/ja_files/figs_ja/choi/purity_dynamics/}
+  {/home/jadeleon/Documents/chaos_meets_channels/ja_files/figs_ja/bloch/}
+  {/home/jadeleon/Documents/chaos_meets_channels/ja_files/figs_ja/}
+  {/home/jadeleon/Documents/doctorado/2025-2/protocolo_candidatura/gfx/chaos/}
+}
+\usepackage{tikz}
+
+\begin{document}
+\newcommand{\scalefont}{1}
+%\huge
+\fontsize{18}{0}\selectfont
+\begin{tikzpicture}
+
+\begin{scope}[shift={(0,0)}, local bounding box=integrable]
+% Spacing ratios{{{
+\begin{scope}[shift={(0,0)}, local bounding box=spacingRatios]
+
+% Histograma P(r)
+\node[anchor=north west](rDistRegular) at (0, 0)
+  {\includegraphics[height=5cm]{meanLevelSpacing_distribution_chaotic.pdf}};
+
+\fill[white] ([yshift=1.7mm]rDistRegular.south west) rectangle ([yshift=14mm]rDistRegular.south east);% rectangulo blanco abajo
+
+\fill[white] ([xshift=1.6mm]rDistRegular.north west) rectangle ([xshift=16.2mm]rDistRegular.south west);% rectangulo blanco izquierda
+
+\fill[white]
+  ([xshift=1cm, yshift=1cm]rDistRegular.center) rectangle 
+  ([xshift=3.46cm, yshift=2.3cm]rDistRegular.center);% recatngulo blanco legends
+
+\node[anchor=west, xshift=0.9cm, yshift=1.2cm] at (rDistRegular.center) 	
+  {GOE};
+\node[anchor=west, xshift=0.9cm, yshift=2.cm] at (rDistRegular.center) 	
+  {Poisson};
+
+% Ticks
+\node[anchor=east, xshift=1.78cm, yshift=-0.38cm] 
+  at (rDistRegular.north west) {2};% 2
+\node[anchor=north east, xshift=1.78cm, yshift=1.6cm] 
+  at (rDistRegular.south west) {0};% 0
+\node[anchor=north, xshift=-0.57cm, yshift=1.6cm] 
+  at (rDistRegular.south east) {1}; %1
+
+% Etiquetas de los ejes
+\node[anchor=north, xshift=0.55cm, yshift=1.5cm] 
+  at (rDistRegular.south) {$\tilde r$};
+\node[anchor=south, rotate=90, xshift=0.6cm, yshift=-1.7cm]
+  at (rDistRegular.west) {$P(\tilde r)$};
+\end{scope}
+%}}}
+
+% Choi purity{{{
+\begin{scope}[shift={([xshift=1cm,yshift=0.53cm]spacingRatios.east)}, local bounding box=choiPurity]
+% Gráfica 
+\node[anchor=west](cjPurityRegular) at (0,0)
+%  at ([xshift=20pt,yshift=14pt]rDistRegular.east)
+ {\includegraphics[height=4.23cm]{choi_chaotic_purity2.pdf}};
+
+\fill[white] ([yshift=1.7mm]cjPurityRegular.south west) rectangle ([yshift=5mm]cjPurityRegular.south east);% rectangulo blanco abajo
+
+% Etiquetas de 0 a 50 en pasos de 10
+\foreach \x [count=\i from 0] in {0,10,20,30,40,50} {
+  \node[anchor=north, yshift=20pt] at ([xshift=10 + \i*34.5pt]cjPurityRegular.south west) {\x};
+}
+
+% Etiquetas de 0.2 a 1.0 en pasos de 0.2 (vertical izquierda)
+\foreach \y [count=\i from 1] in {0.2,0.4,0.6,0.8,1.0} {
+  \node[anchor=east, xshift=12pt] at ([yshift=19 + (\i-1)*26pt]cjPurityRegular.south west) {\y};
+}
+
+%\node[anchor=south,rotate=90] 
+%  at ([xshift=-0.4cm, yshift=0.15cm]cjPurityRegular.west) 
+%  {$\Tr[\mathcal{D}^2]$}; 
+
+\node[anchor=north,rotate=0] 
+  at ([xshift=0cm, yshift=0.5cm]cjPurityRegular.south) 
+  {$t$}; 
+\end{scope}
+%}}}
+
+% Dinámica esfera de Bloch{{{
+\begin{scope}[anchor=north west, shift={([xshift=1.6cm,yshift=-2.3cm]rDistRegular.south west)}, local bounding box=bloch]
+\foreach \i in {1,...,5} {
+  \node (c\i) at ({(\i - 1) * 2.9 - 0.4}, 0) [anchor=south west, inner sep=0] 
+    {\includegraphics[height=2.9cm, page=\i]{chaotic.pdf}};
+}
+\end{scope}
+% Flecha de tiempo debajo de todo el scope
+\draw[->, line width=2pt, >=stealth, shorten >=11pt]
+    ([xshift=4cm, yshift=-0.3cm]bloch.south west) -- 
+    ([xshift=-4cm, yshift=-0.3cm]bloch.south east);
+\node[anchor=west] at ([xshift=-4.2cm, yshift=-0.3cm]bloch.south east) {$t$};
+%}}}
+
+\end{scope}
+
+%\node[] at (1.7,2) {\includegraphics[height=0.1cm]{legends.pdf}};
+%\node[] at (-0.8, 2) {$\Tr[\mathcal{D}(t)^2]$};
+%\node[] at (1.7, 2) {$\Tr[\mathcal{D}(t)^2]$};
+%\node[] at (4.1, 2) {$\Tr[\mathcal{D}(t)^2]$};
+%\node[] at (7.1,2) {$\ev{\Tr[\mathcal{D}(t)^2]}_{\mathrm{Haar}}$};
+
+% Etiquetas {{{
+\node () at ([xshift=25pt, yshift=0pt]spacingRatios.north west) {(b1)};
+\node () at ([xshift=25pt, yshift=10pt]spacingRatios.south west) {(b2)};
+\node () at ([xshift=2pt, yshift=0pt]spacingRatios.north east) {(b3)};
+%}}}
+\end{tikzpicture}
+\end{document}

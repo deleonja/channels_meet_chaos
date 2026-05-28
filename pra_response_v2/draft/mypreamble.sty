@@ -1,0 +1,70 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mypreamble}[2024/05/21 Custom preamble for physics articles]
+
+% ===== ENCODING & LANGUAGE =====
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[english]{babel}
+
+% ===== MATH PACKAGES =====
+\RequirePackage{amsmath, amssymb, amsthm, mathtools}
+\RequirePackage{physics, bbm, bm}
+\RequirePackage{dsfont}
+
+% ===== GRAPHICS & CAPTIONS =====
+\RequirePackage{graphicx}
+%\RequirePackage{caption}
+
+% ===== LINKS & REFERENCES =====
+\RequirePackage{url}
+\RequirePackage{hyperref}
+
+% ===== TIKZ & DRAWING =====
+\RequirePackage{tikz}
+\usetikzlibrary{arrows}
+
+%% ===== DEBUGGING & ANNOTATIONS =====
+%%\RequirePackage[inline]{showlabels}
+%%\renewcommand{\showlabelfont}{\footnotesize\color{gray}}
+%%\renewcommand{\showlabelrefline}{\hrule width 0pt height -2ex depth 0pt}
+%
+%\RequirePackage[draft,inline,nomargin]{fixme}
+%\fxsetup{theme=color}
+%\definecolor{jacolor}{RGB}{200,40,0}
+%\FXRegisterAuthor{ja}{aja}{\color{jacolor}JA}
+
+% ===== THEOREM ENVIRONMENTS =====
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+
+% ===== CUSTOM COMMANDS =====
+% Mathematical operators
+\newcommand{\dsone}{\mathds{1}}
+\newcommand{\re}[1]{\text{Re}\qty(#1)}
+\newcommand{\im}[1]{\text{Im}\qty(#1)}
+
+% Calligraphic letters
+\newcommand{\mcA}{\mathcal{A}} \newcommand{\mcB}{\mathcal{B}}
+\newcommand{\mcC}{\mathcal{C}} \newcommand{\mcD}{\mathcal{D}}
+\newcommand{\mcE}{\mathcal{E}} \newcommand{\mcF}{\mathcal{F}}
+\newcommand{\mcG}{\mathcal{G}} \newcommand{\mcH}{\mathcal{H}}
+\newcommand{\mcI}{\mathcal{I}} \newcommand{\mcL}{\mathcal{L}}
+\newcommand{\mcM}{\mathcal{M}} \newcommand{\mcN}{\mathcal{N}}
+\newcommand{\mcO}{\mathcal{O}} \newcommand{\mcP}{\mathcal{P}}
+\newcommand{\mcQ}{\mathcal{Q}} \newcommand{\mcS}{\mathcal{S}}
+\newcommand{\mcT}{\mathcal{T}} \newcommand{\mcU}{\mathcal{U}}
+
+% References
+\newcommand{\eref}[1]{eq.~(\ref{#1})} \newcommand{\Eref}[1]{Eq.~(\ref{#1})}
+\newcommand{\sref}[1]{sec.~\ref{#1}} \newcommand{\Sref}[1]{Sec.~\ref{#1}}
+\newcommand{\fref}[1]{Fig.~\ref{#1}} \newcommand{\Fref}[1]{Fig.~\ref{#1}}
+\newcommand{\tref}[1]{table~\ref{#1}} \newcommand{\Tref}[1]{Table~\ref{#1}}
+
+% Utility commands
+\newcommand{\todo}[1]{\textcolor{red}{#1}}
+\newcommand{\jafix}[2]{\janote*{#2}{\color{blue!70!black} #1}}
+
+%\endpackage

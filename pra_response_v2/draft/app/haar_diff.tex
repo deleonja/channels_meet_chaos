@@ -1,0 +1,119 @@
+%!TEX root = ../main.tex
+\appendix
+\section{Haar average of the Choi state purity $\Tr[\mcD(t)^2]$}
+\label{app:haar}
+In this appendix, we derive the Haar-expectation value of the
+Choi state purity, \Eref{eq:haar:avg:choi}. The channel $\mcE_t$
+acts upon the first spin ($S$) in the chain,
+while the environment $E$ consists of the $L-1$ spins
+$i=2, \dots, L$, prepared in a random product state
+$\ket{\psi_E} = \bigotimes_{i=2}^L \ket{\phi_i}$.
+
+The Choi echo for this channel is related to the evolved
+environment state $\rho_E(t) = \Tr_S[U(t) (\mathbb{I}_S/2 \otimes
+\dyad{\psi_E}) U^\dagger(t)]$ via
+\DIFdelbegin \DIFdel{$\Tr[\mcD(t)^2] = d_S^2 \Tr_E[\rho_E(t)^2]$
+(where $d_S=2$)}\DIFdelend \DIFaddbegin \DIFadd{$\Tr[\mcD(t)^2] = \Tr_E[\rho_E(t)^2]$}\DIFaddend .
+We compute the Haar average of this quantity over $\ket{\psi_E}$
+using the swap trick $\Tr[A^2] = \Tr[\mathbb{S} (A \otimes A)]$:
+\begin{align}
+\mathbb{E}\Big[\Tr[\mcD(t)^2]\Big]
+%&= 4 \, \mathbb{E}\Big[ \Tr_E \big[ \rho_E(t)^2 \big] \Big]
+&= \Tr_{E_A E_B} \Big[
+\mathbb{S}_E \, \mathbb{E}\big[ \rho_E(t) \otimes \rho_E(t) \big] \Big],
+\label{eq:app:avg_swap}
+\end{align}
+And then:
+%DIF <  aquí quité un 4 multiplicando al principio
+%DIF <  Use widetext for the complex derivation steps
+\begin{widetext}
+\begin{align}
+%DIF < \mathbb{E}\Big[\Tr[\mcD(t)^2]\Big]
+%DIF < %&= 4 \, \mathbb{E}\Big[ \Tr_E \big[ \rho_E(t)^2 \big] \Big]
+%DIF < &= 4 \, \Tr_{E_A E_B} \Big[
+%DIF < \mathbb{S}_E \, \mathbb{E}\big[ \rho_E(t) \otimes \rho_E(t) \big] \Big],
+%DIF < \label{eq:app:avg_swap}
+%DIF < \\
+%DIF < %
+\mathbb{E}\big[ \rho_E(t) \otimes \rho_E(t) \big]
+&= \mathbb{E}\Big[
+\Tr_{S_A S_B} \Big(
+U^{\otimes 2}
+\qty( \frac{\mathbb{I}_S}{2} \otimes \dyad{\psi_E} )^{\otimes 2}
+U^{\dagger \otimes 2}
+\Big) \Big]
+%\nonumber \\
+%
+%&
+= \Tr_{S_A S_B} \Big[
+U^{\otimes 2}
+\qty( \frac{\mathbb{I}_S^{\otimes 2}}{4} \otimes
+\mathbb{E}\big[\dyad{\psi_E}^{\otimes 2}\big] )
+U^{\dagger \otimes 2}
+\Big].
+\label{eq:app:avg_rhoE_tensor}
+\end{align}
+\end{widetext}
+Due to the product state structure, the environment average
+factorizes:
+\begin{equation}
+\mathbb{E}\big[\dyad{\psi_E}^{\otimes 2}\big]
+= \bigotimes_{i=2}^L
+\mathbb{E}\big[\dyad{\phi_i}^{\otimes 2}\big]
+= \bigotimes_{i=2}^L \qty( \frac{\mathbb{I}_i + \mathbb{S}_i}{6} ).
+\label{eq:app:haar_moment_2_qubit}
+\end{equation}
+Here, $\mathbb{E}[\dyad{\phi}^{\otimes 2}] = (\mathbb{I} + \mathbb{S})/(d(d+1))$
+is the standard second moment \cite{collins_2022_weingarten},
+which for qubits ($d=2$) yields
+$(\mathbb{I} + \mathbb{S})/6$.
+
+Substituting \Eref{eq:app:avg_rhoE_tensor} and
+\Eref{eq:app:haar_moment_2_qubit} into \Eref{eq:app:avg_swap}:
+\begin{align}
+\mathbb{E}\Big[\Tr[\mcD(t)^2]\Big]
+= \frac{1}{4} \Tr \Big[ & (\mathbb{I}_S^{\otimes 2} \otimes \mathbb{S}_E)
+U^{\otimes 2} \nonumber \\
+& \times \qty( \mathbb{I}_S^{\otimes 2} \otimes
+\bigotimes_{i=2}^L \frac{\mathbb{I}_i + \mathbb{S}_i}{6} )
+U^{\dagger \otimes 2}
+\Big].
+\end{align}
+We expand the averaged projector in the Pauli basis using
+$\frac{\mathbb{I} + \mathbb{S}}{6} =
+\frac{1}{12} \sum_{k \in \{0,x,y,z\}} c_k (\sigma_k \otimes \sigma_k)$,
+where $c_0 = 3$ and $c_{x,y,z} = 1$. The tensor product becomes
+\begin{align}
+\bigotimes_{i=2}^L \frac{\mathbb{I}_i + \mathbb{S}_i}{6}
+&= \frac{1}{12^{L-1}} \sum_{\vec{\alpha}}
+\qty(\prod\DIFdelbegin \DIFdel{_{j=1}^{L-1} }\DIFdelend \DIFaddbegin \DIFadd{_{j=2}^{L} }\DIFaddend c_{\alpha_j})
+(\sigma_{\vec{\alpha}}^E \otimes \sigma_{\vec{\alpha}}^E)
+\nonumber \\
+&= \frac{1}{12^{L-1}} \sum_{\vec{\alpha}}
+3^{L-1-w(\vec{\alpha})}
+(\sigma_{\vec{\alpha}}^E \otimes \sigma_{\vec{\alpha}}^E),
+\end{align}
+where $\vec{\alpha} = (\alpha_2, \dots, \alpha_L) \in \{0,x,y,z\}^{L-1}$,
+$\sigma_{\vec{\alpha}}^E = \bigotimes_{i=2}^L \sigma_{\alpha_i}$,
+and $w(\vec{\alpha})$ counts the non-identity operators in $\vec{\alpha}$.
+
+Defining the full Pauli operator
+$\sigma_{\vec{\alpha}}^F = \mathbb{I}_1 \otimes \sigma_{\vec{\alpha}}^E$
+(using $\sigma_0 \equiv \mathbb{I}$), and inserting the
+expansion, we find
+\begin{widetext}
+\begin{align}
+\mathbb{E}\Big[\Tr[\mcD(t)^2]\Big]
+&= \frac{1}{4} \cdot \frac{1}{12^{L-1}} \sum_{\vec{\alpha}} 3^{L-1-w(\vec{\alpha})}
+\Tr \Big[ (\mathbb{I}_S^{\otimes 2} \otimes \mathbb{S}_E)
+\Big( U (\sigma_{\vec{\alpha}}^F) U^\dagger
+\otimes U (\sigma_{\vec{\alpha}}^F) U^\dagger \Big) \Big]
+\nonumber \\
+%
+&= \frac{1}{4^{L}} \sum_{\vec{\alpha} \in \{0,x,y,z\}^{L-1}}
+\frac{1}{3^{w(\vec{\alpha})}}
+\Tr_E \Big[ \qty( \Tr_S \big[U(t)
+\sigma_{\vec{\alpha}}^F U^\dagger(t) \big] )^2 \Big].
+\label{eq:app:final_result}
+\end{align}
+\end{widetext}

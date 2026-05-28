@@ -1,0 +1,62 @@
+\documentclass[border=10pt]{standalone}
+
+\usepackage{physics}
+
+\usepackage{graphicx}
+\graphicspath{
+  {/home/jadeleon/Documents/chaos_meets_channels/ja_files/figs_ja/choi/purity_dynamics/}
+  {/home/jadeleon/Documents/chaos_meets_channels/ja_files/figs_ja/bloch/}
+  {/home/jadeleon/Documents/chaos_meets_channels/ja_files/figs_ja/}
+  {/home/jadeleon/Documents/doctorado/2025-2/protocolo_candidatura/gfx/chaos/}
+}
+\usepackage{tikz}
+
+\begin{document}
+\newcommand{\scalefont}{1}
+%\huge
+\fontsize{18}{0}\selectfont
+\begin{tikzpicture}
+%\node (a1) at (0, 0) [anchor=north west, inner sep=0] 
+%  {\includegraphics[width=0.48\linewidth]{meanLevelSpacing_distribution_chaotic.pdf}};
+%\node[anchor=north west, xshift=-10pt, yshift=10pt] at (a1.north west) {(a1)};
+
+% Anchor a2 to the top-right of a1 with small horizontal gap
+%\node (a2) at (a1.north east) [anchor=north west, inner sep=0, xshift=5pt] 
+%  {\includegraphics[width=0.48\linewidth]{meanLevelSpacing_distribution_regular.pdf}};
+%\node[anchor=north west, xshift=-10pt, yshift=10pt] at (a2.north west) {(a2)};
+
+% Row 2: chaotic.pdf (5 pages) with labels (b1), (b2), etc.
+%\foreach \i in {1,...,5} {
+%  \node (b\i) at ({(\i - 1) * 2.7}, -4.5) [anchor=north west, inner sep=0] 
+%    {\includegraphics[width=0.19\linewidth, page=\i]{chaotic.pdf}};
+%}
+%\node[anchor=north west, xshift=-10pt, yshift=5pt] at (b1.north west) {(b1)};
+
+%\node[] at (1.7,2) {\includegraphics[height=0.1cm]{legends.pdf}};
+%\node[] at (-0.8, 2) {$\Tr[\mathcal{D}(t)^2]$};
+%\node[] at (1.7, 2) {$\Tr[\mathcal{D}(t)^2]$};
+%\node[] at (4.1, 2) {$\Tr[\mathcal{D}(t)^2]$};
+%\node[] at (7.1,2) {$\ev{\Tr[\mathcal{D}(t)^2]}_{\mathrm{Haar}}$};
+
+\begin{scope}[shift={(0,0)}]
+\node[anchor=north west](rDistRegular) at (0, 0)
+{\includegraphics[height=5cm]{meanLevelSpacing_distribution_regular.pdf}};
+% Rectángulo blanco abajo de la figura
+\fill[white] ([yshift=1.7mm]rDistRegular.south west) rectangle ([yshift=14mm]rDistRegular.south east);
+% Rectángulo blanco a la izquierda de la figura
+\fill[white] ([xshift=1.6mm]rDistRegular.north west) rectangle ([xshift=16.2mm]rDistRegular.south west);
+% Etiquetas en las esquinas
+\node[anchor=south west, xshift=34pt, yshift=-17.5pt] at (rDistRegular.north west) {2}; % Superior izquierda
+\node[anchor=north west, xshift=34pt, yshift=43pt] at (rDistRegular.south west) {0}; % Inferior izquierda  
+\node[anchor=north east, xshift=-7.5pt, yshift=43pt] at (rDistRegular.south east) {1}; % Inferior derecha
+\node[anchor=center, xshift=15pt, yshift=30pt] at (rDistRegular.south) {$\tilde r$};
+\node[anchor=center, rotate=90, xshift=17pt, yshift=-30pt] at (rDistRegular.west) {$P(\tilde r)$};
+%
+%\node[anchor=south west](cjPurityRegular) at ([xshift=8pt,yshift=14pt]rDistRegular.east) [anchor=west]
+%%\node[anchor=north west](cjPurityRegular) at (0, 0)
+% {\includegraphics[height=4.3cm]{choi_regular_purity2.pdf}};
+%\node[anchor=east,rotate=90] at ([xshift=-4pt, yshift=25pt]cjPurityRegular.west) {$\Tr[\mathcal{D}^2]$}; 
+%\node[anchor=east,rotate=0] at ([xshift=12pt, yshift=0pt]cjPurityRegular.south) {$t$}; 
+\end{scope}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,616 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[     24515,        608]
+NotebookOptionsPosition[     23801,        587]
+NotebookOutlinePosition[     24203,        603]
+CellTagsIndexPosition[     24160,        600]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"x", "=", "20"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"legend", "=", 
+  RowBox[{"LineLegend", "[", 
+   RowBox[{
+    RowBox[{"{", "\n", "  ", 
+     RowBox[{
+      RowBox[{"Directive", "[", 
+       RowBox[{
+        RowBox[{"ColorData", "[", 
+         RowBox[{"97", ",", " ", "7"}], "]"}], ",", " ", "Dashed", ",", " ", 
+        "Thick"}], "]"}], ",", " ", "\n", "  ", 
+      RowBox[{"Directive", "[", 
+       RowBox[{
+        RowBox[{"ColorData", "[", 
+         RowBox[{"97", ",", " ", "2"}], "]"}], ",", " ", "Dashed", ",", " ", 
+        "Thick"}], "]"}], ",", " ", "\n", "  ", 
+      RowBox[{"Directive", "[", 
+       RowBox[{
+        RowBox[{"ColorData", "[", 
+         RowBox[{"97", ",", " ", "3"}], "]"}], ",", " ", "Dashed", ",", " ", 
+        "Thick"}], "]"}], ",", " ", "\n", "  ", 
+      RowBox[{"Directive", "[", 
+       RowBox[{
+        RowBox[{"ColorData", "[", 
+         RowBox[{"97", ",", " ", "5"}], "]"}], ",", " ", "Dashed", ",", " ", 
+        "Thick"}], "]"}], ",", " ", "\n", "  ", 
+      RowBox[{"Directive", "[", 
+       RowBox[{
+        RowBox[{"ColorData", "[", 
+         RowBox[{"97", ",", " ", "4"}], "]"}], ",", " ", "Dashed", ",", " ", 
+        "Thick"}], "]"}]}], "}"}], ",", " ", "\n", " ", 
+    RowBox[{"{", 
+     RowBox[{"\"\<\>\"", ",", " ", "\"\<\>\"", ",", " ", "\"\<\>\"", ",", 
+      " ", "\"\<\>\"", ",", " ", "\"\<\>\""}], "}"}], ",", " ", "\n", " ", 
+    RowBox[{"LegendMarkers", " ", "->", " ", 
+     RowBox[{"{", "\n", "   ", 
+      RowBox[{
+       RowBox[{"Graphics", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"EdgeForm", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Opacity", "[", "1", "]"}], ",", " ", 
+             RowBox[{"AbsoluteThickness", "[", "3", "]"}], ",", " ", 
+             RowBox[{"ColorData", "[", 
+              RowBox[{"97", ",", " ", "7"}], "]"}]}], "}"}], "]"}], ",", " ", 
+          "White", ",", " ", 
+          RowBox[{"Disk", "[", "]"}]}], "}"}], "]"}], ",", "\n", "   ", 
+       RowBox[{"Graphics", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"EdgeForm", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Opacity", "[", "1", "]"}], ",", " ", 
+             RowBox[{"AbsoluteThickness", "[", "3", "]"}], ",", " ", 
+             RowBox[{"ColorData", "[", 
+              RowBox[{"97", ",", " ", "2"}], "]"}]}], "}"}], "]"}], ",", " ", 
+          "White", ",", " ", 
+          RowBox[{"Polygon", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", 
+             RowBox[{"{", 
+              RowBox[{"1", ",", " ", 
+               RowBox[{"-", "1"}]}], "}"}], ",", " ", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "1"}], ",", " ", 
+               RowBox[{"-", "1"}]}], "}"}]}], "}"}], "]"}]}], "}"}], "]"}], ",",
+        " ", "\n", "   ", 
+       RowBox[{"Graphics", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"EdgeForm", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Opacity", "[", "1", "]"}], ",", " ", 
+             RowBox[{"AbsoluteThickness", "[", "3", "]"}], ",", " ", 
+             RowBox[{"ColorData", "[", 
+              RowBox[{"97", ",", " ", "3"}], "]"}]}], "}"}], "]"}], ",", " ", 
+          "White", ",", " ", 
+          RowBox[{"Polygon", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", 
+             RowBox[{"{", 
+              RowBox[{"1", ",", " ", "0"}], "}"}], ",", " ", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", " ", 
+               RowBox[{"-", "1"}]}], "}"}], ",", " ", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "1"}], ",", " ", "0"}], "}"}]}], "}"}], "]"}]}], 
+         "}"}], "]"}], ",", " ", "\n", "   ", 
+       RowBox[{"Graphics", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"EdgeForm", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Opacity", "[", "1", "]"}], ",", " ", 
+             RowBox[{"AbsoluteThickness", "[", "3", "]"}], ",", " ", 
+             RowBox[{"ColorData", "[", 
+              RowBox[{"97", ",", " ", "5"}], "]"}]}], "}"}], "]"}], ",", " ", 
+          "White", ",", " ", 
+          RowBox[{"Polygon", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", " ", 
+               RowBox[{"-", "1"}]}], "}"}], ",", " ", 
+             RowBox[{"{", 
+              RowBox[{"1", ",", " ", "1"}], "}"}], ",", " ", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "1"}], ",", " ", "1"}], "}"}]}], "}"}], "]"}]}], 
+         "}"}], "]"}], ",", " ", "\[IndentingNewLine]", 
+       RowBox[{"Graphics", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"EdgeForm", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Opacity", "[", "1", "]"}], ",", " ", 
+             RowBox[{"AbsoluteThickness", "[", "3", "]"}], ",", " ", 
+             RowBox[{"ColorData", "[", 
+              RowBox[{"97", ",", " ", "4"}], "]"}]}], "}"}], "]"}], ",", " ", 
+          "White", ",", " ", 
+          RowBox[{"Rectangle", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "0.8"}], ",", " ", 
+              RowBox[{"-", "0.8"}]}], "}"}], ",", " ", 
+            RowBox[{"{", 
+             RowBox[{"0.8", ",", " ", "0.8"}], "}"}]}], "]"}]}], "}"}], 
+        "]"}]}], "}"}]}], ",", "\n", " ", 
+    RowBox[{"LegendMarkerSize", " ", "->", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"2.5", "x"}], ",", " ", "x"}], "}"}]}], ",", 
+    RowBox[{"Spacings", "->", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "1.25"}], "}"}]}]}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.9806178926987886`*^9, 3.980617956208256*^9}, {
+  3.9806180556601133`*^9, 3.980618056352404*^9}, {3.980618119345792*^9, 
+  3.980618191935882*^9}, {3.9806182264707203`*^9, 3.980618227481101*^9}, {
+  3.980618497634001*^9, 3.980618502127915*^9}, {3.980618539097632*^9, 
+  3.980618554243092*^9}, {3.980618926224412*^9, 3.980618961159156*^9}},
+ CellLabel->"In[66]:=",ExpressionUUID->"ff7bb70e-e2f9-4b51-b991-b3466b321fbf"],
+
+Cell[BoxData[
+ TemplateBox[{"\"\"", "\"\"", "\"\"", "\"\"", "\"\""},
+  "LineLegend",
+  DisplayFunction->(StyleBox[
+    StyleBox[
+     PaneBox[
+      TagBox[
+       GridBox[{{
+          TagBox[
+           GridBox[{{
+              GraphicsBox[{{
+                 Directive[
+                  EdgeForm[
+                   Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                  PointSize[0.5], 
+                  AbsoluteThickness[1.6], 
+                  RGBColor[0.363898, 0.618501, 0.782349], 
+                  Dashing[{Small, Small}], 
+                  Thickness[Large]], {
+                  LineBox[{{0, 20}, {50., 20}}]}}, {
+                 Directive[
+                  EdgeForm[
+                   Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                  PointSize[0.5], 
+                  AbsoluteThickness[1.6], 
+                  RGBColor[0.363898, 0.618501, 0.782349], 
+                  Dashing[{Small, Small}], 
+                  Thickness[Large]], {
+                  InsetBox[
+                   GraphicsBox[{
+                    EdgeForm[{
+                    Opacity[1], 
+                    AbsoluteThickness[3], 
+                    RGBColor[0.363898, 0.618501, 0.782349]}], 
+                    GrayLevel[1], 
+                    DiskBox[{0, 0}]}, {DefaultBaseStyle -> {"Graphics", {
+                    AbsolutePointSize[6]}, 
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.5], 
+                    AbsoluteThickness[1.6], 
+                    RGBColor[0.363898, 0.618501, 0.782349], 
+                    Dashing[{Small, Small}], 
+                    Thickness[Large]]}}], 
+                   NCache[
+                    Scaled[{
+                    Rational[1, 2], 
+                    Rational[1, 2]}], 
+                    Scaled[{0.5, 0.5}]], Automatic, 
+                   Scaled[1]]}}}, AspectRatio -> Full, ImageSize -> {50., 20},
+                PlotRangePadding -> None, ImagePadding -> Automatic, 
+               BaselinePosition -> (Scaled[0.30000000000000004`] -> 
+                Baseline)], #}, {
+              GraphicsBox[{{
+                 Directive[
+                  EdgeForm[
+                   Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                  PointSize[0.5], 
+                  AbsoluteThickness[1.6], 
+                  RGBColor[0.880722, 0.611041, 0.142051], 
+                  Dashing[{Small, Small}], 
+                  Thickness[Large]], {
+                  LineBox[{{0, 20}, {50., 20}}]}}, {
+                 Directive[
+                  EdgeForm[
+                   Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                  PointSize[0.5], 
+                  AbsoluteThickness[1.6], 
+                  RGBColor[0.880722, 0.611041, 0.142051], 
+                  Dashing[{Small, Small}], 
+                  Thickness[Large]], {
+                  InsetBox[
+                   GraphicsBox[{
+                    EdgeForm[{
+                    Opacity[1], 
+                    AbsoluteThickness[3], 
+                    RGBColor[0.880722, 0.611041, 0.142051]}], 
+                    GrayLevel[1], 
+                    PolygonBox[{{0, 1}, {1, -1}, {-1, -1}}]}, {
+                    DefaultBaseStyle -> {"Graphics", {
+                    AbsolutePointSize[6]}, 
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.5], 
+                    AbsoluteThickness[1.6], 
+                    RGBColor[0.880722, 0.611041, 0.142051], 
+                    Dashing[{Small, Small}], 
+                    Thickness[Large]]}}], 
+                   NCache[
+                    Scaled[{
+                    Rational[1, 2], 
+                    Rational[1, 2]}], 
+                    Scaled[{0.5, 0.5}]], Automatic, 
+                   Scaled[1]]}}}, AspectRatio -> Full, ImageSize -> {50., 20},
+                PlotRangePadding -> None, ImagePadding -> Automatic, 
+               BaselinePosition -> (Scaled[0.30000000000000004`] -> 
+                Baseline)], #2}, {
+              GraphicsBox[{{
+                 Directive[
+                  EdgeForm[
+                   Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                  PointSize[0.5], 
+                  AbsoluteThickness[1.6], 
+                  RGBColor[0.560181, 0.691569, 0.194885], 
+                  Dashing[{Small, Small}], 
+                  Thickness[Large]], {
+                  LineBox[{{0, 20}, {50., 20}}]}}, {
+                 Directive[
+                  EdgeForm[
+                   Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                  PointSize[0.5], 
+                  AbsoluteThickness[1.6], 
+                  RGBColor[0.560181, 0.691569, 0.194885], 
+                  Dashing[{Small, Small}], 
+                  Thickness[Large]], {
+                  InsetBox[
+                   GraphicsBox[{
+                    EdgeForm[{
+                    Opacity[1], 
+                    AbsoluteThickness[3], 
+                    RGBColor[0.560181, 0.691569, 0.194885]}], 
+                    GrayLevel[1], 
+                    PolygonBox[{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}]}, {
+                    DefaultBaseStyle -> {"Graphics", {
+                    AbsolutePointSize[6]}, 
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.5], 
+                    AbsoluteThickness[1.6], 
+                    RGBColor[0.560181, 0.691569, 0.194885], 
+                    Dashing[{Small, Small}], 
+                    Thickness[Large]]}}], 
+                   NCache[
+                    Scaled[{
+                    Rational[1, 2], 
+                    Rational[1, 2]}], 
+                    Scaled[{0.5, 0.5}]], Automatic, 
+                   Scaled[1]]}}}, AspectRatio -> Full, ImageSize -> {50., 20},
+                PlotRangePadding -> None, ImagePadding -> Automatic, 
+               BaselinePosition -> (Scaled[0.30000000000000004`] -> 
+                Baseline)], #3}, {
+              GraphicsBox[{{
+                 Directive[
+                  EdgeForm[
+                   Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                  PointSize[0.5], 
+                  AbsoluteThickness[1.6], 
+                  RGBColor[0.528488, 0.470624, 0.701351], 
+                  Dashing[{Small, Small}], 
+                  Thickness[Large]], {
+                  LineBox[{{0, 20}, {50., 20}}]}}, {
+                 Directive[
+                  EdgeForm[
+                   Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                  PointSize[0.5], 
+                  AbsoluteThickness[1.6], 
+                  RGBColor[0.528488, 0.470624, 0.701351], 
+                  Dashing[{Small, Small}], 
+                  Thickness[Large]], {
+                  InsetBox[
+                   GraphicsBox[{
+                    EdgeForm[{
+                    Opacity[1], 
+                    AbsoluteThickness[3], 
+                    RGBColor[0.528488, 0.470624, 0.701351]}], 
+                    GrayLevel[1], 
+                    PolygonBox[{{0, -1}, {1, 1}, {-1, 1}}]}, {
+                    DefaultBaseStyle -> {"Graphics", {
+                    AbsolutePointSize[6]}, 
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.5], 
+                    AbsoluteThickness[1.6], 
+                    RGBColor[0.528488, 0.470624, 0.701351], 
+                    Dashing[{Small, Small}], 
+                    Thickness[Large]]}}], 
+                   NCache[
+                    Scaled[{
+                    Rational[1, 2], 
+                    Rational[1, 2]}], 
+                    Scaled[{0.5, 0.5}]], Automatic, 
+                   Scaled[1]]}}}, AspectRatio -> Full, ImageSize -> {50., 20},
+                PlotRangePadding -> None, ImagePadding -> Automatic, 
+               BaselinePosition -> (Scaled[0.30000000000000004`] -> 
+                Baseline)], #4}, {
+              GraphicsBox[{{
+                 Directive[
+                  EdgeForm[
+                   Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                  PointSize[0.5], 
+                  AbsoluteThickness[1.6], 
+                  RGBColor[0.922526, 0.385626, 0.209179], 
+                  Dashing[{Small, Small}], 
+                  Thickness[Large]], {
+                  LineBox[{{0, 20}, {50., 20}}]}}, {
+                 Directive[
+                  EdgeForm[
+                   Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                  PointSize[0.5], 
+                  AbsoluteThickness[1.6], 
+                  RGBColor[0.922526, 0.385626, 0.209179], 
+                  Dashing[{Small, Small}], 
+                  Thickness[Large]], {
+                  InsetBox[
+                   GraphicsBox[{
+                    EdgeForm[{
+                    Opacity[1], 
+                    AbsoluteThickness[3], 
+                    RGBColor[0.922526, 0.385626, 0.209179]}], 
+                    GrayLevel[1], 
+                    RectangleBox[{-0.8, -0.8}, {0.8, 0.8}]}, {
+                    DefaultBaseStyle -> {"Graphics", {
+                    AbsolutePointSize[6]}, 
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.5], 
+                    AbsoluteThickness[1.6], 
+                    RGBColor[0.922526, 0.385626, 0.209179], 
+                    Dashing[{Small, Small}], 
+                    Thickness[Large]]}}], 
+                   NCache[
+                    Scaled[{
+                    Rational[1, 2], 
+                    Rational[1, 2]}], 
+                    Scaled[{0.5, 0.5}]], Automatic, 
+                   Scaled[1]]}}}, AspectRatio -> Full, ImageSize -> {50., 20},
+                PlotRangePadding -> None, ImagePadding -> Automatic, 
+               BaselinePosition -> (Scaled[0.30000000000000004`] -> 
+                Baseline)], #5}}, 
+            GridBoxAlignment -> {
+             "Columns" -> {Center, Left}, "Rows" -> {{Baseline}}}, AutoDelete -> 
+            False, GridBoxDividers -> {
+             "Columns" -> {{False}}, "Rows" -> {{False}}}, 
+            GridBoxItemSize -> {"Columns" -> {{All}}, "Rows" -> {{All}}}, 
+            GridBoxSpacings -> {"Columns" -> {{0}}, "Rows" -> {{1.25}}}], 
+           "Grid"]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Left}}, "Rows" -> {{Top}}}, 
+        AutoDelete -> False, 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{0}}, "Rows" -> {{0}}}], "Grid"], 
+      Alignment -> Left, AppearanceElements -> None, 
+      ImageMargins -> {{5, 5}, {5, 5}}, ImageSizeAction -> "ResizeToFit"], 
+     LineIndent -> 0, StripOnInput -> False], {FontFamily -> "Arial"}, 
+    Background -> Automatic, StripOnInput -> False]& ),
+  Editable->True,
+  InterpretationFunction:>(RowBox[{"LineLegend", "[", 
+     RowBox[{
+       RowBox[{"{", 
+         RowBox[{
+           RowBox[{"Directive", "[", 
+             RowBox[{
+               
+               TemplateBox[<|
+                "color" -> RGBColor[0.363898, 0.618501, 0.782349]|>, 
+                "RGBColorSwatchTemplate"], ",", 
+               RowBox[{"Dashing", "[", 
+                 RowBox[{"{", 
+                   RowBox[{"Small", ",", "Small"}], "}"}], "]"}], ",", 
+               RowBox[{"Thickness", "[", "Large", "]"}]}], "]"}], ",", 
+           RowBox[{"Directive", "[", 
+             RowBox[{
+               
+               TemplateBox[<|
+                "color" -> RGBColor[0.880722, 0.611041, 0.142051]|>, 
+                "RGBColorSwatchTemplate"], ",", 
+               RowBox[{"Dashing", "[", 
+                 RowBox[{"{", 
+                   RowBox[{"Small", ",", "Small"}], "}"}], "]"}], ",", 
+               RowBox[{"Thickness", "[", "Large", "]"}]}], "]"}], ",", 
+           RowBox[{"Directive", "[", 
+             RowBox[{
+               
+               TemplateBox[<|
+                "color" -> RGBColor[0.560181, 0.691569, 0.194885]|>, 
+                "RGBColorSwatchTemplate"], ",", 
+               RowBox[{"Dashing", "[", 
+                 RowBox[{"{", 
+                   RowBox[{"Small", ",", "Small"}], "}"}], "]"}], ",", 
+               RowBox[{"Thickness", "[", "Large", "]"}]}], "]"}], ",", 
+           RowBox[{"Directive", "[", 
+             RowBox[{
+               
+               TemplateBox[<|
+                "color" -> RGBColor[0.528488, 0.470624, 0.701351]|>, 
+                "RGBColorSwatchTemplate"], ",", 
+               RowBox[{"Dashing", "[", 
+                 RowBox[{"{", 
+                   RowBox[{"Small", ",", "Small"}], "}"}], "]"}], ",", 
+               RowBox[{"Thickness", "[", "Large", "]"}]}], "]"}], ",", 
+           RowBox[{"Directive", "[", 
+             RowBox[{
+               
+               TemplateBox[<|
+                "color" -> RGBColor[0.922526, 0.385626, 0.209179]|>, 
+                "RGBColorSwatchTemplate"], ",", 
+               RowBox[{"Dashing", "[", 
+                 RowBox[{"{", 
+                   RowBox[{"Small", ",", "Small"}], "}"}], "]"}], ",", 
+               RowBox[{"Thickness", "[", "Large", "]"}]}], "]"}]}], "}"}], 
+       ",", 
+       RowBox[{"{", 
+         RowBox[{#, ",", #2, ",", #3, ",", #4, ",", #5}], "}"}], ",", 
+       RowBox[{"LegendMarkers", "\[Rule]", 
+         RowBox[{"{", 
+           RowBox[{
+             GraphicsBox[{
+               EdgeForm[{
+                 Opacity[1], 
+                 AbsoluteThickness[3], 
+                 RGBColor[0.363898, 0.618501, 0.782349]}], 
+               GrayLevel[1], 
+               DiskBox[{0, 0}]}], ",", 
+             GraphicsBox[{
+               EdgeForm[{
+                 Opacity[1], 
+                 AbsoluteThickness[3], 
+                 RGBColor[0.880722, 0.611041, 0.142051]}], 
+               GrayLevel[1], 
+               PolygonBox[{{0, 1}, {1, -1}, {-1, -1}}]}], ",", 
+             GraphicsBox[{
+               EdgeForm[{
+                 Opacity[1], 
+                 AbsoluteThickness[3], 
+                 RGBColor[0.560181, 0.691569, 0.194885]}], 
+               GrayLevel[1], 
+               PolygonBox[{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}]}], ",", 
+             GraphicsBox[{
+               EdgeForm[{
+                 Opacity[1], 
+                 AbsoluteThickness[3], 
+                 RGBColor[0.528488, 0.470624, 0.701351]}], 
+               GrayLevel[1], 
+               PolygonBox[{{0, -1}, {1, 1}, {-1, 1}}]}], ",", 
+             GraphicsBox[{
+               EdgeForm[{
+                 Opacity[1], 
+                 AbsoluteThickness[3], 
+                 RGBColor[0.922526, 0.385626, 0.209179]}], 
+               GrayLevel[1], 
+               RectangleBox[{-0.8, -0.8}, {0.8, 0.8}]}]}], "}"}]}], ",", 
+       RowBox[{"LegendMarkerSize", "\[Rule]", 
+         RowBox[{"{", 
+           RowBox[{"50.`", ",", "20"}], "}"}]}], ",", 
+       RowBox[{"Spacings", "\[Rule]", 
+         RowBox[{"{", 
+           RowBox[{"0", ",", "1.25`"}], "}"}]}]}], "]"}]& )]], "Output",
+ CellChangeTimes->{{3.980617893862974*^9, 3.9806179567574*^9}, 
+   3.9806180568478603`*^9, 3.98061812314417*^9, {3.980618167834531*^9, 
+   3.9806181922304163`*^9}, 3.980618228209218*^9, {3.980618498434882*^9, 
+   3.980618503013577*^9}, {3.98061854645492*^9, 3.9806185548295307`*^9}, {
+   3.980618926871771*^9, 3.980618930812518*^9}, 3.9806189615076723`*^9},
+ CellLabel->"Out[67]=",ExpressionUUID->"fc622ecf-daa4-498c-a21a-bd0fd31ca6ca"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"NotebookDirectory", "[", "]"}], 
+    "<>", "\"\<legend_fig3.pdf\>\""}], ",", "legend"}], "]"}]], "Input",
+ CellChangeTimes->{{3.980618228990386*^9, 3.980618269731563*^9}},
+ CellLabel->"In[68]:=",ExpressionUUID->"7eed90dc-1d90-48d2-941d-b8240f8fa671"],
+
+Cell[BoxData["\<\"/home/jadeleon/Documents/chaos_meets_channels/notas/draft/\
+figures/legend_fig3.pdf\"\>"], "Output",
+ CellChangeTimes->{3.9806182731879396`*^9, 3.980618560531746*^9, 
+  3.9806189325058823`*^9, 3.9806189633721724`*^9},
+ CellLabel->"Out[68]=",ExpressionUUID->"328cbcb2-f61d-44be-9bdd-42af303d2ac7"]
+}, Open  ]]
+},
+WindowSize->{606, 683.25},
+WindowMargins->{{Automatic, 64.5}, {35.25, Automatic}},
+FrontEndVersion->"14.2 for Linux x86 (64-bit) (December 26, 2024)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"a41c544a-43e7-4016-92c4-8457bb114e6b"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 6333, 155, 346, "Input",ExpressionUUID->"ff7bb70e-e2f9-4b51-b991-b3466b321fbf"],
+Cell[6912, 179, 16194, 387, 144, "Output",ExpressionUUID->"fc622ecf-daa4-498c-a21a-bd0fd31ca6ca"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[23143, 571, 325, 7, 22, "Input",ExpressionUUID->"7eed90dc-1d90-48d2-941d-b8240f8fa671"],
+Cell[23471, 580, 314, 4, 25, "Output",ExpressionUUID->"328cbcb2-f61d-44be-9bdd-42af303d2ac7"]
+}, Open  ]]
+}
+]
+*)
+
